@@ -1,3 +1,14 @@
+/* Reset global para Safari */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
 h1, h2, h3, h4 {
     font-family: var(--font-primary);
     font-weight: var(--font-weight-bold);
@@ -82,7 +93,7 @@ h1, h2, h3, h4 {
   }
 
 .header .container {
-    width: 100vw;
+    width: 100%;
     height: 96px;
     background-color: #d9d9d99d;
     display: flex;
@@ -91,8 +102,11 @@ h1, h2, h3, h4 {
     padding: 0 128px;
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 9999999999999 !important;
     backdrop-filter: blur(20px);
+    box-sizing: border-box;
 }
 
 .header img {
@@ -127,12 +141,13 @@ h1, h2, h3, h4 {
 }
 
 .hero {
-    width: 100vw;
+    width: 100%;
     min-height: 900px;
     background: url(img/bg\ hero.webp) no-repeat bottom center;
     background-size: cover;
     padding: var(--gutter) 0;
     margin-bottom: 48px;
+    box-sizing: border-box;
 }
 
 .hero-container {
@@ -292,8 +307,7 @@ h1, h2, h3, h4 {
   }
 
   .parceiros {
-    width: 100vw;
-    padding: 0, var(--gutter);
+    width: 100%;
   }
 
   .parceiros-container {
@@ -400,24 +414,32 @@ h1, h2, h3, h4 {
   }
 
   .beneficios {
-    width: 100vw;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .beneficios-container {
     max-width: 1920px;
-    padding: 0, var(--gutter) !important
+    padding: 0 var(--gutter) !important;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .beneficios-grid {
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
     gap: 20px;
-    justify-content: center;;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .card-parceiros {
     min-width: 300px;
+    max-width: 100%;
     min-height: 90px;
     display: flex;
     justify-content: space-between;
@@ -434,6 +456,8 @@ h1, h2, h3, h4 {
     color: inherit;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .card-parceiros:hover {
@@ -447,6 +471,25 @@ h1, h2, h3, h4 {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
+  /* Safari específico - correção para overflow */
+  @supports (-webkit-appearance: none) {
+    .beneficios {
+      width: 100%;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .beneficios-grid {
+      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;
+    }
+    
+    .card-parceiros {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+  }
+
   .card-parceiros img {
     max-width: 50px;
   }
@@ -457,7 +500,8 @@ h1, h2, h3, h4 {
   }
   
   .nossos-planos {
-    width: 100vw;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .planos-container {
@@ -600,9 +644,10 @@ h1, h2, h3, h4 {
 
   /* FAQ Section */
   .faq {
-    width: 100vw;
+    width: 100%;
     min-height: 80vh;
     margin: 64px 0;
+    box-sizing: border-box;
   }
 
   .faq .container {
@@ -1343,16 +1388,31 @@ h1, h2, h3, h4 {
   }
 
   /* Benefícios */
+  .beneficios {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .beneficios-container {
+    padding: 0 15px !important;
+  }
+  
   .beneficios-grid {
-    padding: 0 15px;
+    padding: 0;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   
   .card-parceiros {
     min-width: auto;
+    max-width: 100%;
     min-height: 70px;
     padding: 6px 12px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   
   .card-parceiros span {
@@ -1483,7 +1543,7 @@ h1, h2, h3, h4 {
 
   /* Footer */
   .footer {
-    padding: 160px 20px 100px 20px;
+    padding: 350px 20px 100px 20px;
   }
   
   .footer-content {
