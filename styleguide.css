@@ -1,40 +1,56 @@
 :root {
-    --font-primary: 'Lato', sans-serif;
-    --font-secondary: 'Roboto', sans-serif;
-  
-    --font-weight-regular: 400;
-    --font-weight-bold: 700;
-    --font-weight-button: 500;
-  
-    --font-size-h1: 48px;
-    --font-size-h2: 36px;
-    --font-size-h3: 32px;
-    --font-size-h4: 24px;
-  }
-  
-  :root {
-    --color-text-primary: rgba(1, 38, 16, 0.90);
-    --color-text-secondary: rgba(255, 255, 255, 1);
-  
-    --color-bege: rgba(219, 170, 111, 0.90);
-    --color-bg-cards: rgba(0, 102, 41, 0.2);
-    --color-background: rgba(217, 217, 217, 1);
-  }
+    /* Colors */
+    --color-primary-dark: #1a4d45;
+    --color-primary-dark-hover: #133a34;
+    --color-primary-lime: #8cc63f;
+    --color-primary-lime-hover: #81BB3F;
+    --color-secondary-orange: #F4A261;
+    --color-secondary-gold: #E3A754;
+    --color-bg-body: #FEFCFB;
 
-  :root {
-    --gutter: 128px;
-  }
+    /* From globals.css */
+    --color-bg-gray: #e6e8eb;
+    --color-bg-light: #f4f4f4;
+    --color-bg-white: #ffffff;
+    --color-bg-off-white: #f3f3f3;
 
-  /* TABLET (768px - 1199px) */
-  @media (max-width: 1199px) {
-    :root {
-      --gutter: 64px;
-    }
-  }
+    --color-green-deep: #16443d;
+    --color-green-deep-hover: #133a34;
+    --color-green-muted: #4F8560;
+    --color-green-muted-hover: #40684d;
 
-  /* MOBILE (320px - 767px) */
-  @media (max-width: 767px) {
-    :root {
-      --gutter: 32px;
-    }
-  }
+    --color-text-main: #1a4d45;
+    --color-text-gray: #555555;
+    --color-text-light: #f3f3f3;
+    --color-text-white: #fefcfb;
+
+    /* Scrollbar */
+    --scrollbar-track: #d4d4d4;
+    --scrollbar-thumb-start: #4A8901;
+    --scrollbar-thumb-end: #458200;
+    --scrollbar-border: #146d00bb;
+
+    /* Typography */
+    --font-family-primary: 'Poppins', sans-serif;
+
+    --font-size-h1: 64px;
+    --font-size-h2: 48px;
+    --font-size-h3: 28px;
+    --font-size-body: 16px;
+    --font-size-small: 14px;
+
+    /* Spacing */
+    --spacing-gutter: 128px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
+
+    /* UI Elements */
+    --border-radius-sm: 8px;
+    --border-radius-md: 16px;
+    --border-radius-lg: 24px;
+    --border-radius-pill: 50px;
+    --border-radius-round: 50%;
+}
