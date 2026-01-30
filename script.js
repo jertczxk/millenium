@@ -143,6 +143,7 @@ const menuOverlay = document.querySelector('.mobile-menu-overlay');
 const toggleBtn = document.getElementById('menu-toggle-btn');
 const menuItems = document.querySelectorAll('.menu-item-anim');
 const navbarMobile = document.querySelector('.navbar-mobile');
+const ctaFloating = document.querySelector('#ctaFlutuante');
 const body = document.body;
 
 if (menuOverlay && toggleBtn && navbarMobile) {
@@ -164,6 +165,7 @@ if (menuOverlay && toggleBtn && navbarMobile) {
         onStart: () => {
             isAnimating = true;
             body.classList.add('no-scroll');
+            if (ctaFloating) gsap.to(ctaFloating, { autoAlpha: 0, duration: 0.3 }); // Hide CTA
         },
         onComplete: () => {
             isAnimating = false;
@@ -173,6 +175,7 @@ if (menuOverlay && toggleBtn && navbarMobile) {
             isAnimating = false;
             body.classList.remove('no-scroll');
             menuOverlay.style.pointerEvents = "none";
+            if (ctaFloating) gsap.to(ctaFloating, { autoAlpha: 1, duration: 0.3 }); // Show CTA
         }
     });
 
@@ -250,6 +253,47 @@ if (menuOverlay && toggleBtn && navbarMobile) {
     });
 }
 
+// GSAP ScrollTrigger implementation for CTA
+if (document.getElementById('ctaFlutuante')) {
+
+    const cta = document.getElementById('ctaFlutuante');
+    gsap.set(cta, { x: 100, autoAlpha: 0 }); // Initial state
+
+    // Animation control
+    const ctaAnim = gsap.to(cta, {
+        x: 0,
+        autoAlpha: 1,
+        duration: 0.5,
+        paused: true,
+        ease: "power3.out",
+        onStart: () => cta.classList.add('cta-ativo'),
+        onReverseComplete: () => cta.classList.remove('cta-ativo')
+    });
+
+    ScrollTrigger.create({
+        trigger: "body",
+        start: "top -150px", // Active after 150px
+        end: "bottom bottom",
+        onUpdate: (self) => {
+            const plansSection = document.querySelector('.plans-section');
+            const isPlansVisible = plansSection ? ScrollTrigger.isInViewport(plansSection, 0.1) : false; // 10% visible
+
+            // Logic:
+            // 1. If scrolling UP (-1) -> Hide
+            // 2. If scrolling DOWN (1) AND Plans Section is Visible -> Hide (avoid duplicate CTA)
+            // 3. If scrolling DOWN (1) AND Plans NOT Visible -> Show
+
+            if (self.direction === -1 || isPlansVisible) {
+                ctaAnim.reverse();
+            } else if (self.direction === 1) {
+                ctaAnim.play();
+            }
+        },
+        onLeaveBack: () => ctaAnim.reverse() // Ensure hidden at top
+    });
+}
+
+
 /* =========================================
 5. ANIMAÇÃO HERO + CTA HOVER + USUÁRIOS
 ========================================= */
@@ -280,20 +324,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 5.2 BOTÃO CTA HOVER (Dark Button) - Aplica a TODOS os botões .btn-action
     const btnActions = document.querySelectorAll('.btn-action');
 
-    btnActions.forEach(btnDark => {
-        const arrowDark = btnDark.querySelector('.arrow-svg');
-        const circleDark = btnDark.querySelector('.icon-bg');
+    // 5.2 BOTÃO CTA HOVER (Legacy Removal - Consolidated below)
+    // Code removed to prevent duplication
 
-        if (arrowDark && circleDark) {
-            const btnTl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "power3.out" } });
-            btnTl.to(btnDark, { scale: 1.02, backgroundColor: "#225e55", duration: 0.5 })
-                .to(circleDark, { scale: 1 }, "<")
-                .to(arrowDark, { rotation: 70, scale: 1.03, stroke: "#1a4d45" }, "<");
-
-            btnDark.addEventListener('mouseenter', () => btnTl.play());
-            btnDark.addEventListener('mouseleave', () => btnTl.reverse());
-        }
-    });
 });
 
 // 5.3 STACK DE USUÁRIOS
@@ -348,35 +381,6 @@ gsap.from(".content-overlay", {
     },
     y: 30, opacity: 0, duration: 0.8, ease: "power2.out"
 });
-
-// Botão CTA (Light Button)
-const btnLight = document.querySelector('.btn-action-2');
-const arrowLight = document.querySelector('.arrow-svg-2');
-const circleLight = document.querySelector('.icon-bg-2');
-
-if (btnLight && arrowLight && circleLight) {
-    const tlLight = gsap.timeline({
-        paused: true,
-        defaults: { duration: 0.6, ease: "power3.out" }
-    });
-    tlLight
-        .to(btnLight, {
-            scale: 1.02,
-            backgroundColor: "#81BB3F",
-            duration: 0.5
-        })
-        .to(circleLight, {
-            scale: 1
-        }, "<")
-        .to(arrowLight, {
-            rotation: 70,
-            scale: 1.03,
-            stroke: "#81BB3F"
-        }, "<");
-
-    btnLight.addEventListener('mouseenter', () => tlLight.play());
-    btnLight.addEventListener('mouseleave', () => tlLight.reverse());
-}
 
 /* =========================================
 6. ANIMAÇÃO HORIZONTAL SCROLL (CARDS)
@@ -469,11 +473,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     <input type="text" id="popup-nome" class="form-input" placeholder="Seu Nome Completo" required>
                     <input type="tel" id="popup-telefone" class="form-input" placeholder="(00) 00000-0000" required>
                     <input type="email" id="popup-email" class="form-input" placeholder="Seu E-mail Principal" required>
-                    <button type="submit" class="btn-action-2 form-submit-btn">
+                    <button type="submit" class="trigger-btn form-submit-btn">
                         <span>Ir para o Whatsapp</span>
                         <div class="icon-container">
-                            <div class="icon-bg-2"></div>
-                            <svg class="arrow-svg-2" viewBox="0 0 24 24">
+                            <div class="icon-bg"></div>
+                            <svg class="arrow-svg" viewBox="0 0 24 24">
                                 <line x1="0" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
@@ -493,6 +497,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const triggers = document.querySelectorAll('.trigger-btn');
     const closeBtn = document.querySelector('.close-popup-btn');
 
+    // Elements to hide
+    const navbarMobile = document.querySelector('.navbar-mobile');
+    const ctaFloating = document.querySelector('#ctaFlutuante');
+
     const popupTitle = document.getElementById('popup-title');
     const popupBody = document.getElementById('popup-body');
     const popupImgContainer = document.getElementById('popup-img-container');
@@ -510,6 +518,8 @@ document.addEventListener("DOMContentLoaded", () => {
             isAnimating = true;
             body.classList.add('no-scroll');
             overlay.classList.add('active');
+            if (ctaFloating) gsap.to(ctaFloating, { autoAlpha: 0, duration: 0.3 });
+            if (navbarMobile) gsap.to(navbarMobile, { autoAlpha: 0, duration: 0.3 });
         },
         onComplete: () => { isAnimating = false; },
         onReverseComplete: () => {
@@ -517,6 +527,8 @@ document.addEventListener("DOMContentLoaded", () => {
             body.classList.remove('no-scroll');
             overlay.classList.remove('active');
             isOpen = false;
+            if (ctaFloating) gsap.to(ctaFloating, { autoAlpha: 1, duration: 0.3 });
+            if (navbarMobile) gsap.to(navbarMobile, { autoAlpha: 1, duration: 0.3 });
         }
     });
 
@@ -568,8 +580,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Animação para o botão dinâmico do popup
             const popupSubmitBtn = card.querySelector('.form-submit-btn');
             if (popupSubmitBtn) {
-                const arrow = popupSubmitBtn.querySelector('.arrow-svg-2');
-                const circle = popupSubmitBtn.querySelector('.icon-bg-2');
+                const arrow = popupSubmitBtn.querySelector('.arrow-svg');
+                const circle = popupSubmitBtn.querySelector('.icon-bg');
                 if (arrow && circle) {
                     const hoverTl = gsap.timeline({ paused: true, defaults: { duration: 0.4, ease: "power3.out" } });
                     hoverTl.to(popupSubmitBtn, {
@@ -579,9 +591,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                         .to(circle, { scale: 1 }, "<")
                         .to(arrow, {
-                            rotation: -45,
                             scale: 1.03,
-                            stroke: "var(--color-primary-dark)"
+                            stroke: "#FFFFFF" // White arrow, NO rotation
                         }, "<");
 
                     popupSubmitBtn.addEventListener('mouseenter', () => hoverTl.play());
@@ -634,32 +645,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- EVENT LISTENERS DE ANIMAÇÃO ---
-    actionButtons.forEach(btn => {
-        // Animação de Hover 
-        const arrow = btn.querySelector('.arrow-svg, .arrow-svg-2');
-        const circle = btn.querySelector('.icon-bg, .icon-bg-2');
+    // --- EVENT LISTENERS DE ANIMAÇÃO (Consolidated below) ---
 
-        if (arrow && circle) {
-            const hoverTl = gsap.timeline({ paused: true, defaults: { duration: 0.4, ease: "power3.out" } });
-            // Verificamos o tipo de botão para definir as cores
-            const isLime = btn.classList.contains('btn-action-2') || btn.classList.contains('trigger-btn') || btn.classList.contains('form-submit-btn');
-
-            hoverTl.to(btn, {
-                scale: 1.02,
-                backgroundColor: isLime ? "var(--color-primary-lime-hover)" : "var(--color-primary-dark-hover)",
-                duration: 0.3
-            })
-                .to(circle, { scale: 1 }, "<")
-                .to(arrow, {
-                    rotation: -45,
-                    scale: 1.03,
-                    stroke: isLime ? "var(--color-primary-dark)" : "var(--color-primary-lime)"
-                }, "<");
-
-            btn.addEventListener('mouseenter', () => hoverTl.play());
-            btn.addEventListener('mouseleave', () => hoverTl.reverse());
-        }
-    });
 
     // --- EVENT LISTENERS DE POPUP ---
     triggers.forEach(btn => {
@@ -746,6 +733,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicialização
     calculateROI();
+});
+
+/* =========================================
+   PAGE TRANSITION (GSAP)
+   ========================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Inject Overlay into DOM
+    const overlayHTML = `
+      <div id="page-transition-overlay">
+        <img src="img/logo header.png" alt="Loading..." class="loader-logo">
+      </div>
+    `;
+    document.body.insertAdjacentHTML('afterbegin', overlayHTML);
+
+    const overlay = document.getElementById('page-transition-overlay');
+    const loaderLogo = overlay.querySelector('.loader-logo');
+
+    // 2. ENTER Animation (Page Load)
+    // Verify if we are coming from a redirection (optional, but good for UX)
+    // For now, always animate out on load.
+    const enterTl = gsap.timeline({
+        onComplete: () => {
+            overlay.style.pointerEvents = "none";
+        }
+    });
+
+    enterTl
+        .to(loaderLogo, { autoAlpha: 1, duration: 0.3 })
+        .to(overlay, { scaleY: 0, transformOrigin: "top", duration: 0.8, ease: "power4.inOut" }, "+=0.2");
+
+
+    // 3. EXIT Animation (Link Click)
+    const links = document.querySelectorAll('a:not([target="_blank"]):not([href^="#"]):not([href^="mailto"]):not([href^="tel"])');
+
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const targetUrl = link.getAttribute('href');
+
+            // Ignore if current page anchor or empty
+            if (!targetUrl || targetUrl.startsWith('#') || targetUrl === window.location.pathname) return;
+
+            e.preventDefault();
+            overlay.style.pointerEvents = "all"; // Block clicks during exit
+
+            const exitTl = gsap.timeline({
+                onComplete: () => {
+                    window.location.href = targetUrl;
+                }
+            });
+
+            exitTl
+                .set(overlay, { transformOrigin: "bottom" })
+                .to(overlay, { scaleY: 1, duration: 0.6, ease: "power4.inOut" })
+                .to(loaderLogo, { autoAlpha: 1, duration: 0.3 }, "-=0.4");
+        });
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -928,4 +971,59 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+});
+
+/* =========================================
+   7. BUTTON ANIMATIONS (Centralized)
+   ========================================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+    // 1. BTN-ACTION (Dark Theme)
+    const startDarkButtons = document.querySelectorAll('.btn-action');
+    startDarkButtons.forEach(btn => {
+        const arrow = btn.querySelector('.arrow-svg');
+        const circle = btn.querySelector('.icon-bg');
+        if (arrow && circle) {
+            const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "power3.out" } });
+            tl.to(btn, { scale: 1.02, backgroundColor: "#225e55", duration: 0.5 })
+                .to(circle, { scale: 1 }, "<")
+                .to(arrow, { rotation: 75, scale: 1.03, stroke: "#1a4d45" }, "<");
+
+
+            btn.addEventListener('mouseenter', () => tl.play());
+            btn.addEventListener('mouseleave', () => tl.reverse());
+        }
+    });
+
+    // 2. BTN-ACTION-2 (Lime Theme - Rotate)
+    const startLimeButtons = document.querySelectorAll('.btn-action-2');
+    startLimeButtons.forEach(btn => {
+        const arrow = btn.querySelector('.arrow-svg-2');
+        const circle = btn.querySelector('.icon-bg-2');
+        if (arrow && circle) {
+            const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "power3.out" } });
+            tl.to(btn, { scale: 1.02, backgroundColor: "var(--color-primary-lime-hover)", duration: 0.5 })
+                .to(circle, { scale: 1 }, "<")
+                .to(arrow, { rotation: 75, scale: 1.03, stroke: "#FFFFFF" }, "<"); // Arrow becomes White
+
+            btn.addEventListener('mouseenter', () => tl.play());
+            btn.addEventListener('mouseleave', () => tl.reverse());
+        }
+    });
+
+    // 3. TRIGGER-BTN (Lime Theme - No Rotate)
+    const startTriggerButtons = document.querySelectorAll('.trigger-btn');
+    startTriggerButtons.forEach(btn => {
+        const arrow = btn.querySelector('.arrow-svg');
+        const circle = btn.querySelector('.icon-bg');
+        if (arrow && circle) {
+            const tl = gsap.timeline({ paused: true, defaults: { duration: 0.6, ease: "power3.out" } });
+            tl.to(btn, { scale: 1.02, backgroundColor: "var(--color-primary-lime-hover)", duration: 0.5 })
+                .to(circle, { scale: 1 }, "<")
+                .to(arrow, { scale: 1.03, stroke: "#FFFFFF" }, "<"); // NO ROTATION, Arrow becomes White
+
+            btn.addEventListener('mouseenter', () => tl.play());
+            btn.addEventListener('mouseleave', () => tl.reverse());
+        }
+    });
 });

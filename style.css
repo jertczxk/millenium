@@ -33,62 +33,122 @@
   transform: scale(1.02);
 }
 
+/* =========================================
+   BUTTON STYLES (SEPARATED)
+   ========================================= */
+
+/* --- 1. BTN-ACTION (Dark Theme) ---
+   BG: Dark
+   Text: White
+   Icon BG: White
+   Arrow: Lime
+*/
 .btn-primary-dark,
 .btn-action {
   background-color: var(--color-primary-dark);
   color: var(--color-text-white);
 }
 
+.btn-action .icon-bg {
+  background-color: var(--color-bg-white);
+}
+
+.btn-action .arrow-svg {
+  stroke: var(--color-primary-lime);
+}
+
+/* --- 2. BTN-ACTION-2 (Lime Theme) ---
+   BG: Lime
+   Text: White
+   Icon BG: Dark
+   Arrow: Dark
+*/
 .btn-primary-lime,
 .btn-action-2,
-.trigger-btn,
 .form-submit-btn {
   background-color: var(--color-primary-lime);
   color: var(--color-text-white);
 }
 
-/* Icon Container for Buttons */
+.btn-action-2 .icon-bg-2,
+.form-submit-btn .icon-bg-2 {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-action-2 .arrow-svg-2,
+.form-submit-btn .arrow-svg-2 {
+  stroke: var(--color-primary-dark);
+}
+
+/* --- 3. TRIGGER-BTN (Lime Theme - Separate) ---
+   BG: Lime
+   Text: White
+   Icon BG: Dark
+   Arrow: Dark
+*/
+.trigger-btn {
+  background-color: var(--color-primary-lime);
+  color: var(--color-text-white);
+}
+
+.trigger-btn .icon-bg {
+  background-color: var(--color-primary-dark);
+}
+
+.trigger-btn .arrow-svg {
+  stroke: var(--color-primary-dark);
+}
+
+/* Icon Container */
+.icon-container {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Base Icon Container Styles */
 .btn-base .icon-bg,
 .btn-action .icon-bg,
 .btn-action-2 .icon-bg-2,
-.trigger-btn .icon-bg {
+.trigger-btn .icon-bg,
+.form-submit-btn .icon-bg-2 {
   position: absolute;
-  width: 36px;
-  height: 36px;
-  background-color: var(--color-bg-white);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   transform: scale(0);
   transform-origin: center;
   z-index: 1;
 }
 
-.btn-primary-lime .icon-bg,
-.btn-action-2 .icon-bg-2,
-.trigger-btn .icon-bg {
-  background-color: var(--color-primary-dark);
-  /* Contrast for lime btn */
-}
-
+/* Base SVG Styles */
 .btn-base .arrow-svg,
 .btn-action .arrow-svg,
 .btn-action-2 .arrow-svg-2,
-.trigger-btn .arrow-svg {
+.trigger-btn .arrow-svg,
+.form-submit-btn .arrow-svg-2 {
   position: relative;
   z-index: 2;
   width: 20px;
   height: 20px;
   stroke: var(--color-primary-lime);
+  /* Default fallback */
   stroke-width: 2.5;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.btn-primary-lime .arrow-svg,
+/* SVG Specific Overrides */
 .btn-action-2 .arrow-svg-2,
-.trigger-btn .arrow-svg {
+.trigger-btn .arrow-svg,
+.form-submit-btn .arrow-svg-2 {
   stroke: var(--color-primary-dark);
-  /* Contrast */
 }
 
 /* =========================================
@@ -463,6 +523,57 @@
   width: 100%;
 }
 
+/* CTA FLUTUANTE */
+
+.cta {
+  position: fixed;
+  bottom: 30px;
+  right: -420px;
+  opacity: 0;
+  z-index: 9999999;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(224, 224, 224, 0.5);
+  border-radius: 48px;
+  border: solid 1px #ffffff30;
+  transition: 0.5s ease;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding: 12px 16px 12px 16px;
+  box-sizing: border-box;
+  max-width: calc(100% - 40px);
+  color: var(--color-text-secondary);
+  height: fit-content;
+}
+
+.cta-ativo {
+  right: 30px;
+  opacity: 1;
+  transition: 0.7s ease;
+}
+
+.cta .btn-action {
+  margin: 0;
+}
+
+.cta .btn:active {
+  transform: translateY(1px);
+}
+
+.cta .btn:focus {
+  outline: 3px solid rgba(0, 0, 0, 0.18);
+  outline-offset: 2px;
+}
+
+.cta .content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
 /* =========================================
    5. HERO SECTION
    ========================================= */
@@ -519,16 +630,6 @@
 .btn-action {
   margin-bottom: 12px;
 }
-
-.icon-container {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 
 /* Linha Inferior (Users + Download) */
 .hero-footer-row {
@@ -665,9 +766,6 @@
   border-color: #ff4d4d !important;
   background-color: rgba(255, 77, 77, 0.05) !important;
 }
-
-/* Ajuste Mobile para o Formulário */
-
 
 /* =========================================
    6. SELOS (BADGES)
@@ -952,8 +1050,8 @@
 
 .icon-container-2 {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1322,28 +1420,6 @@
   width: 100%;
 }
 
-/* --- ESTILO DOS BOTÕES --- */
-
-/* Botão CTA Principal (Escolher plano) - Duplicata removida, estilizado no topo */
-/* Container dos Botões */
-
-/* Estilos internos de icon-bg e arrow-svg removidos (globalizados) */
-
-
-/* Botões Gatilho (Trigger) */
-/* Trigger btn styles removidos (globalizados) */
-
-.icon-container {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Inner icons removidos (globalizados) */
-
 
 /* --- OVERLAY DO POPUP (Mesmo estilo anterior) --- */
 .popup-overlay {
@@ -1442,12 +1518,6 @@
 .popup-text:last-child {
   margin-bottom: 0;
 }
-
-/* Responsivo */
-
-
-/* --- Responsivo Mobile --- */
-
 
 /* --- SEÇÃO ESTATÍSTICAS (SPLIT) --- */
 .stats-section {
@@ -2014,9 +2084,9 @@ input[type=range]::-webkit-slider-thumb:hover {
   overflow: hidden;
 }
 
- .plans-mobile-container {
-    display: none;
-  }
+.plans-mobile-container {
+  display: none;
+}
 
 .plans-header {
   text-align: center;
@@ -2714,6 +2784,16 @@ input[type=range]::-webkit-slider-thumb:hover {
     max-width: 75%;
   }
 
+  .cta {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: calc(100% - 32px);
+    max-width: 400px;
+    min-width: auto;
+    bottom: 20px;
+  }
+
   .hero-section {
     flex-direction: column;
     margin-top: 100px;
@@ -2936,7 +3016,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   .popup-card {
     flex-direction: column;
     width: 95vw;
-    height: 90vh;
+    height: fit-content;
     max-height: 90vh;
     min-height: auto;
     overflow-y: auto;
@@ -2944,12 +3024,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .popup-image-col {
-    width: calc(100% - 32px);
-    height: 180px;
-    flex-shrink: 0;
-    margin: 24px 16px 0 16px;
-    border-radius: 16px;
-    order: 1;
+    display: none;
   }
 
   .popup-content-col {
@@ -2970,11 +3045,10 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .close-popup-btn {
-    top: 1px;
-    right: 1px;
+    top: 12px;
+    right: 12px;
     font-size: 1.8rem;
     padding: 12px;
-    background: rgba(230, 230, 230, 1);
     border-radius: 50%;
     width: 32px;
     height: 32px;
@@ -3143,6 +3217,12 @@ input[type=range]::-webkit-slider-thumb:hover {
     font-weight: 600;
   }
 
+  .mobile-plan-company {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+  }
+
   .mobile-price-container {
     text-align: right;
   }
@@ -3157,15 +3237,15 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .mobile-price-old::after {
-  content: "";
-  position: absolute;
-  left: -5px;
-  right: -5px;
-  top: 45%;
-  height: 2px;
-  background: #e23131c0;
-  transform: rotate(-5deg);
-  border-radius: 2px;
+    content: "";
+    position: absolute;
+    left: -5px;
+    right: -5px;
+    top: 45%;
+    height: 2px;
+    background: #e23131c0;
+    transform: rotate(-5deg);
+    border-radius: 2px;
   }
 
   .mobile-price-main {
@@ -3348,4 +3428,127 @@ input[type=range]::-webkit-slider-thumb:hover {
     flex-direction: row;
     gap: 12px;
   }
+}
+
+/* =========================================
+   LEGAL PAGES STYLING
+   ========================================= */
+.legal-content-section {
+  padding: 160px var(--spacing-gutter) 80px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: var(--color-bg-body);
+}
+
+.legal-content-section h1 {
+  font-family: var(--font-family-primary);
+  font-size: 48px;
+  color: var(--color-primary-dark);
+  margin-bottom: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.legal-content-section h2 {
+  font-family: var(--font-family-primary);
+  font-size: 32px;
+  color: var(--color-primary-dark);
+  margin-top: 40px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.legal-content-section h3 {
+  font-family: var(--font-family-primary);
+  font-size: 24px;
+  color: var(--color-primary-dark);
+  margin-top: 32px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.legal-content-section p,
+.legal-content-section li {
+  font-family: var(--font-family-primary);
+  font-size: 18px;
+  color: var(--color-text-gray);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.legal-content-section ul {
+  margin-left: 24px;
+  margin-bottom: 24px;
+}
+
+.legal-content-section li {
+  margin-bottom: 8px;
+}
+
+.legal-content-section strong {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+}
+
+.legal-content-section a {
+  color: var(--color-primary-lime);
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.legal-content-section a:hover {
+  color: var(--color-primary-dark);
+}
+
+@media (max-width: 768px) {
+  .legal-content-section {
+    padding: 120px var(--spacing-gutter-mobile) 64px;
+  }
+
+  .legal-content-section h1 {
+    font-size: 32px;
+    margin-bottom: 32px;
+  }
+
+  .legal-content-section h2 {
+    font-size: 24px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+  }
+
+  .legal-content-section h3 {
+    font-size: 20px;
+  }
+
+  .legal-content-section p,
+  .legal-content-section li {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   PAGE TRANSITION OVERLAY
+   ========================================= */
+#page-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-primary-dark);
+  z-index: 9999;
+  pointer-events: none;
+  /* Allows clicks to pass through when hidden/opacity 0 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  /* Starts visible to hide initial load */
+  transform-origin: top;
+}
+
+#page-transition-overlay .loader-logo {
+  width: 200px;
+  height: auto;
+  opacity: 0;
 }
