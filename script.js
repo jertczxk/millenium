@@ -278,12 +278,19 @@ if (document.getElementById('ctaFlutuante')) {
             const plansSection = document.querySelector('.plans-section');
             const isPlansVisible = plansSection ? ScrollTrigger.isInViewport(plansSection, 0.1) : false; // 10% visible
 
+            // Check distance to bottom
+            const scrollHeight = document.documentElement.scrollHeight;
+            const scrollPosition = window.scrollY + window.innerHeight;
+            const distToBottom = scrollHeight - scrollPosition;
+            const isNearBottom = distToBottom < 300;
+
             // Logic:
             // 1. If scrolling UP (-1) -> Hide
-            // 2. If scrolling DOWN (1) AND Plans Section is Visible -> Hide (avoid duplicate CTA)
-            // 3. If scrolling DOWN (1) AND Plans NOT Visible -> Show
+            // 2. If scrolling DOWN (1) AND Plans Section is Visible -> Hide
+            // 3. If Near Bottom (<300px) -> Hide
+            // 4. Else (Scrolling DOWN) -> Show
 
-            if (self.direction === -1 || isPlansVisible) {
+            if (self.direction === -1 || isPlansVisible || isNearBottom) {
                 ctaAnim.reverse();
             } else if (self.direction === 1) {
                 ctaAnim.play();

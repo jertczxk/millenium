@@ -2999,6 +2999,10 @@ input[type=range]::-webkit-slider-thumb:hover {
     align-self: center;
   }
 
+  .seal-pill .pill-text.multiline {
+    flex-direction: column;
+  }
+
   .seal-pill .pill-text,
   .pill-text.multiline span,
   .pill-text strong {
@@ -3375,6 +3379,15 @@ input[type=range]::-webkit-slider-thumb:hover {
     margin-left: 12px;
   }
 
+  .faq-answer {
+    margin-top: 0px;
+  }
+
+  .faq-answer-inner {
+    font-size: 16px;
+    padding: 24px 32px 24px 32px;  
+  }
+
   /* Seção Contato */
 
   .contact-section {
@@ -3400,12 +3413,15 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .contact-right {
-    padding: 32px;
+    padding: 32px 16px 32px 16px;
   }
 
   .contact-form {
-    min-width: 310px;
     gap: 16px;
+  }
+
+  .info-item {
+    font-size: 16px;
   }
 
   /* Footer */
