@@ -2,8 +2,8 @@
     /* Colors */
     --color-primary-dark: #1a4d45;
     --color-primary-dark-hover: #133a34;
-    --color-primary-lime: #8cc63f;
-    --color-primary-lime-hover: #81BB3F;
+    --color-primary-lime: #81BB3F;
+    --color-primary-lime-hover: #8CC63F;
     --color-secondary-orange: #F4A261;
     --color-secondary-gold: #E3A754;
     --color-bg-body: #FEFCFB;
@@ -16,8 +16,6 @@
 
     --color-green-deep: #16443d;
     --color-green-deep-hover: #133a34;
-    --color-green-muted: #4F8560;
-    --color-green-muted-hover: #40684d;
 
     --color-text-main: #1a4d45;
     --color-text-gray: #555555;
@@ -38,6 +36,9 @@
     --font-size-h3: 28px;
     --font-size-body: 16px;
     --font-size-small: 14px;
+    --font-size-mobile-t: 32px;
+    --font-size-mobile: 16px;
+    --font-size-mobile-btn: 16px;
 
     /* Spacing */
     --spacing-gutter: 128px;
@@ -46,6 +47,7 @@
     --spacing-lg: 24px;
     --spacing-xl: 32px;
     --spacing-xxl: 40px;
+    --spacing-gutter-mobile: 32px;
 
     /* UI Elements */
     --border-radius-sm: 8px;

@@ -880,4 +880,52 @@ document.addEventListener("DOMContentLoaded", () => {
             ease: "none"
         });
     }
+
+    // --- SMOOTH SCROLL (LENIS + GSAP) ---
+    if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        // Conectar Lenis ao GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+
+        // --- SCROLL TO ANCHOR LINKS ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#' || targetId === '') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+
+                    // Offset da Navbar
+                    const navHeight = document.querySelector('.navbar') ? document.querySelector('.navbar').offsetHeight : 0;
+
+                    gsap.to(window, {
+                        duration: 1.5,
+                        scrollTo: {
+                            y: targetElement,
+                            offsetY: navHeight
+                        },
+                        ease: "power4.inOut"
+                    });
+                }
+            });
+        });
+    }
 });
