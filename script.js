@@ -483,6 +483,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             </svg>
                         </div>
                     </button>
+                    <p class="form-disclaimer">
+                        Ao clicar, você será direcionado para o WhatsApp e aceita receber informações sobre planos MilleniumPREV. Não compartilhamos seus dados com terceiros. <a href="politica-privacidade.html">Política de Privacidade</a>
+                    </p>
                 </form>
             `
         }
@@ -849,9 +852,29 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const nome = nomeInput.value.trim();
+            const tel = telInput.value.trim();
+            const email = emailInput.value.trim();
+
+            // --- LEAD CAPTURE ---
+            const lead = {
+                name: nome,
+                phone: tel,
+                email: email,
+                date: new Date().toISOString(),
+                source: formId === 'popupWhatsappForm' ? 'Popup' : 'Footer Contact'
+            };
+
+            const existingLeads = JSON.parse(localStorage.getItem('millenium_leads') || '[]');
+            existingLeads.push(lead);
+            localStorage.setItem('millenium_leads', JSON.stringify(existingLeads));
+            // --------------------
+
             const message = `Olá! Vim do site MilleniumPREV e quero conhecer mais sobre os planos de proteção familiar. Meu nome: ${nome}`;
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
+
+            // Optional: Clear form after submit
+            form.reset();
         });
     }
 
@@ -1026,4 +1049,166 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.addEventListener('mouseleave', () => tl.reverse());
         }
     });
+});
+
+
+/* =========================================
+   8. COOKIE CONSENT SYSTEM
+   ========================================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const COOKIE_STORAGE_KEY = 'cookie_consent_data';
+
+    // 1. Inject HTML
+    const cookieHTML = `
+    <!-- Cookie Banner -->
+    <div id="cookie-banner">
+        <div class="cookie-text">
+            <p><strong>🍪 Usamos cookies para melhorar sua experiência.</strong></p>
+            <p>Ao continuar navegando, você concorda com nossa <a href="politica-cookies.html">Política de Cookies</a>.</p>
+        </div>
+        <div class="cookie-buttons">
+            <button id="btn-cookie-settings" class="btn-cookie-settings">Gerenciar</button>
+            <button id="btn-cookie-accept" class="btn-cookie-accept">Aceitar tudo</button>
+        </div>
+    </div>
+
+    <!-- Preferences Modal -->
+    <div id="cookie-settings-modal">
+        <div class="cookie-modal-card">
+            <div class="cookie-modal-header">
+                <h3>Preferências de Cookies</h3>
+                <button id="btn-close-cookie-modal" class="btn-close-modal">&times;</button>
+            </div>
+            
+            <div class="cookie-modal-body">
+                <p style="margin-bottom: 20px; font-size: 14px; color: #666;">
+                    Gerencie suas preferências de consentimento. Cookies essenciais não podem ser desativados.
+                </p>
+
+                <!-- Option: Essential -->
+                <div class="cookie-option">
+                    <div class="option-info">
+                        <h4>Essenciais (Obrigatório)</h4>
+                        <p>Necessários para o site funcionar (segurança, login, consentimento).</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked disabled>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Option: Performance -->
+                <div class="cookie-option">
+                    <div class="option-info">
+                        <h4>Desempenho & Análise</h4>
+                        <p>Nos ajudam a entender como o site é usado (visitas, fontes de tráfego).</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="consent-performance" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Option: Marketing -->
+                <div class="cookie-option">
+                    <div class="option-info">
+                        <h4>Marketing & Publicidade</h4>
+                        <p>Usados para fornecer anúncios mais relevantes aos seus interesses.</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="consent-marketing" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="cookie-modal-footer">
+                <button id="btn-save-preferences" class="btn-cookie-accept">Salvar Preferências</button>
+            </div>
+        </div>
+    </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', cookieHTML);
+
+    // 2. Select Elements
+    const banner = document.getElementById('cookie-banner');
+    const modal = document.getElementById('cookie-settings-modal');
+    const btnAccept = document.getElementById('btn-cookie-accept');
+    const btnSettings = document.getElementById('btn-cookie-settings');
+    const btnCloseModal = document.getElementById('btn-close-cookie-modal');
+    const btnSave = document.getElementById('btn-save-preferences');
+
+    // Page-specific trigger (e.g., on policy page)
+    const btnTriggerManual = document.getElementById('trigger-cookie-settings');
+
+    const checkPerformance = document.getElementById('consent-performance');
+    const checkMarketing = document.getElementById('consent-marketing');
+
+    // 3. Logic
+    function checkConsent() {
+        const consent = localStorage.getItem(COOKIE_STORAGE_KEY);
+        if (!consent) {
+            // Show banner with delay
+            setTimeout(() => banner.classList.add('active'), 1000);
+        } else {
+            const data = JSON.parse(consent);
+            console.log("Consent loaded:", data);
+            // Apply consent logic here (e.g., enable/disable scripts)
+        }
+    }
+
+    function saveConsent(performance, marketing) {
+        const data = {
+            essential: true,
+            performance: performance,
+            marketing: marketing,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem(COOKIE_STORAGE_KEY, JSON.stringify(data));
+        banner.classList.remove('active');
+        modal.classList.remove('active');
+        console.log("Consent saved:", data);
+    }
+
+    // 4. Listeners
+    btnAccept.addEventListener('click', () => {
+        saveConsent(true, true); // Accept all
+    });
+
+    btnSettings.addEventListener('click', () => {
+        modal.classList.add('active');
+        // Load checkbox states if previously saved
+        const stored = localStorage.getItem(COOKIE_STORAGE_KEY);
+        if (stored) {
+            const data = JSON.parse(stored);
+            checkPerformance.checked = data.performance;
+            checkMarketing.checked = data.marketing;
+        }
+    });
+
+    if (btnTriggerManual) {
+        btnTriggerManual.addEventListener('click', (e) => {
+            e.preventDefault();
+            banner.classList.add('active'); // Re-open banner
+            // Optional: If they want to go straight to preferences:
+            // modal.classList.add('active');
+        });
+    }
+
+    btnCloseModal.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    btnSave.addEventListener('click', () => {
+        saveConsent(checkPerformance.checked, checkMarketing.checked);
+    });
+
+    // Close modal on outside click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+    });
+
+    // Run
+    checkConsent();
 });
