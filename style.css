@@ -2279,6 +2279,25 @@ input[type=range]::-webkit-slider-thumb:hover {
   z-index: 5;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   border-color: var(--color-secondary-gold);
+  animation: pulseDelay 4s ease-in-out infinite;
+}
+
+@keyframes pulseDelay {
+  0% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.03);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .plan-highlight .plan-card-header {
@@ -2754,7 +2773,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 /* --- MOBILE (max-width: 768px) --- */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
   body {
     overflow-x: hidden;
@@ -3070,6 +3089,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
   .roi-calculator-section {
     padding: var(--spacing-gutter-mobile);
+    height: fit-content;
   }
 
   .roi-grid {
@@ -3156,7 +3176,6 @@ input[type=range]::-webkit-slider-thumb:hover {
 
   .plans-section {
     padding: var(--spacing-gutter-mobile);
-    margin-top: 300px;
   }
 
   .plans-title {
@@ -3192,6 +3211,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
   .mobile-plan-card.highlight {
     border: 10px solid var(--color-primary-lime);
+    animation: pulseDelay 4s ease-in-out infinite;
     position: relative;
     overflow: hidden;
   }
@@ -3214,6 +3234,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   .mobile-plan-header {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     align-items: center;
     padding-bottom: 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -3226,18 +3247,12 @@ input[type=range]::-webkit-slider-thumb:hover {
     font-weight: 600;
   }
 
-  .mobile-plan-company {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--color-primary-dark);
-  }
-
   .mobile-price-container {
-    text-align: right;
+    text-align: center;
   }
 
   .mobile-price-old {
-    font-size: 16px;
+    font-size: 24px;
     color: var(--color-text-gray);
     opacity: 0.9;
     position: relative;
@@ -3258,7 +3273,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .mobile-price-main {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     color: var(--color-primary-dark);
   }
@@ -3385,7 +3400,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
   .faq-answer-inner {
     font-size: 16px;
-    padding: 24px 32px 24px 32px;  
+    padding: 24px 32px 24px 32px;
   }
 
   /* Seção Contato */
