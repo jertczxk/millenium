@@ -441,7 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contentData = {
         rede: {
             title: "Economia Real para o seu dia a dia.",
-            image: "img/rede de beneficios.png",
+            image: "img/rede de beneficios.webp",
             type: "text", // Define que é uma lista de textos
             content: [
                 "Acesse descontos de até 70% em mais de 3 mil estabelecimentos parceiros em todo o Brasil.",
@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         funeral: {
             title: "Acolhimento quando necessário",
-            image: "img/auxilio.png",
+            image: "img/auxilio.webp",
             type: "text",
             content: [
                 "Perder alguém querido já é devastador. Lidar com decisões burocráticas não deveria fazer parte desse processo.",
@@ -461,7 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         cashback: {
             title: "Cuidado Volta em Dinheiro.",
-            image: "img/cashback.png",
+            image: "img/cashback.webp",
             type: "text",
             content: [
                 "Cada vez que você compra nos parceiros aptos, você acumula cashback que volta diretamente para o seu bolso.",
@@ -495,6 +495,44 @@ document.addEventListener("DOMContentLoaded", () => {
                     </p>
                 </form>
             `
+        },
+        // --- PLANS ---
+        plan_prata: {
+            title: "Escolha seu plano Prata",
+            image: "img/prata.webp",
+            type: "plan-selection",
+            options: [
+                { label: "Até 50 anos", price: "R$ 59,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/Master50?plano=c7ff1dc3-03f6-42f2-ae8f-67c794eabbab" },
+                { label: "De 50 a 70 anos", price: "R$ 79,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/Master70?&plano=72fa0970-6041-4b0b-be69-715557561c40" }
+            ]
+        },
+        plan_ouro: {
+            title: "Escolha seu plano Ouro",
+            image: "img/ouro.webp",
+            type: "plan-selection",
+            options: [
+                { label: "Até 50 anos", price: "R$ 69,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/Gold50?&plano=107d4860-7187-4576-bd38-24f6f299e069" },
+                { label: "De 51 a 60 anos", price: "R$ 89,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/Gold70?plano=d0ed50e3-82d2-4422-b555-63de0996b022" },
+                { label: "De 61 a 70 anos", price: "R$ 94,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/gold61?plano=c2e7ac45-d824-4842-bbaf-8152b19ac6f0" }
+            ]
+        },
+        plan_pet: {
+            title: "Escolha seu plano Pet",
+            image: "img/pet.webp",
+            type: "plan-selection",
+            options: [
+                { label: "PET Até 20kg", price: "R$ 29,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/pet?plano=f68e01b5-f296-4ef0-a0f4-c83233db6937" },
+                { label: "PET Acima de 20kg", price: "R$ 39,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/petacima20kg?&plano=eb5f7eb8-f697-421c-b1c6-a4a0a00126da" }
+            ]
+        },
+        plan_company: {
+            title: "Escolha seu plano Company",
+            image: "img/company.webp",
+            type: "plan-selection",
+            options: [
+                { label: "De 20 a 49 Funcionários", price: "R$ 26,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/Company10?&plano=807c6f17-a724-4aeb-a6b7-6c4eaff960c5" },
+                { label: "De 50 a 199 Funcionários", price: "R$ 22,90", period: "/mês", link: "https://crematoriomillenium.tenex.com.br/contratar/Company30?&plano=cda8d91d-6165-436b-b693-b0a892f6eabb" }
+            ]
         }
     };
 
@@ -573,6 +611,32 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             // Injeta o HTML do formulário
             popupBody.insertAdjacentHTML('beforeend', data.htmlContent);
+        } else if (data.type === 'plan-selection') {
+            const container = document.createElement('div');
+            container.classList.add('plan-selection-container');
+
+            data.options.forEach(opt => {
+                const btn = document.createElement('a');
+                btn.href = opt.link;
+                btn.className = 'plan-selection-btn';
+                btn.innerHTML = `
+                    <div class="plan-selection-info">
+                        <span class="plan-label">${opt.label}</span>
+                        <div class="plan-price-box">
+                            <span class="plan-price">${opt.price}</span>
+                            <small>${opt.period}</small>
+                        </div>
+                    </div>
+                    <div class="selection-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                `;
+                container.appendChild(btn);
+            });
+            popupBody.appendChild(container);
         }
     }
 
@@ -622,7 +686,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gsap.set(card, { clipPath: `circle(0px at ${btnCenterX}px ${btnCenterY}px)` });
 
         popupTl.to(card, {
-            clipPath: `circle(150% at ${btnCenterX}px ${btnCenterY}px)`,
+            clipPath: `circle(200% at ${btnCenterX}px ${btnCenterY}px)`,
             duration: 0.8,
             ease: "power2.inOut"
         });
@@ -653,10 +717,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ease: "power2.inOut"
         });
     }
-
-    // --- EVENT LISTENERS DE ANIMAÇÃO ---
-    // --- EVENT LISTENERS DE ANIMAÇÃO (Consolidated below) ---
-
 
     // --- EVENT LISTENERS DE POPUP ---
     triggers.forEach(btn => {
@@ -752,7 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Inject Overlay into DOM
     const overlayHTML = `
       <div id="page-transition-overlay">
-        <img src="img/logo header.png" alt="Loading..." class="loader-logo">
+        <img src="img/logo.webp" alt="Loading..." class="loader-logo">
       </div>
     `;
     document.body.insertAdjacentHTML('afterbegin', overlayHTML);
@@ -804,7 +864,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
 
     // --- LÓGICA DO FORMULÁRIO WHATSAPP (PADRONIZADA) ---
-    const whatsappNumber = "5548996749236";
+    const whatsappNumber = "5548991258150";
 
     function setupWhatsappForm(formId, config) {
         const form = document.getElementById(formId);

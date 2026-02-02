@@ -172,6 +172,11 @@
 }
 
 /* Logo Desktop */
+
+.logo-header {
+  max-width: 270px;
+}
+
 .logo-header img {
   width: 80%;
   max-width: 80%;
@@ -685,25 +690,20 @@
 }
 
 /* Placeholder da imagem (se não houver img tag) */
-.hero-bg img {
+.hero-bg {
   width: 100%;
-  max-width: 800px;
-  /* Limit max width but allow shrinking */
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: fill;
 }
 
-/* --- RESPONSIVO GERAL --- */
-
-/* Laptops & Desktops Defaults handled by base styles (max-width 1280px) */
-
-/* Large Tablets / Small Laptops (1024px - 1300px) - Fix Plans crowding */
-
-
-/* Tablet (max-width: 1024px) */
-
-
-/* Mobile (max-width: 768px) */
+.hero-bg img {
+  height: 85%;
+  width: 85%;
+  bottom: 0;
+  right: 6%;
+  position: absolute;
+}
 
 
 /* --- ESTILO DO FORMULÁRIO DE CONTATO --- */
@@ -1449,8 +1449,10 @@
   position: relative;
   width: 100%;
   max-width: 1080px;
-  height: 600px;
-  min-height: 500px;
+  min-height: 600px;
+  /* Allow height to grow */
+  max-height: 90vh;
+  /* Prevent exceeding viewport */
   background: rgba(22, 81, 75, 0.45);
   backdrop-filter: blur(60px);
   -webkit-backdrop-filter: blur(60px);
@@ -1459,6 +1461,8 @@
   display: flex;
   overflow: hidden;
   clip-path: circle(0px at 50% 50%);
+  margin: auto;
+  /* Ensure centering logic if needed */
 }
 
 .popup-image-col {
@@ -1467,7 +1471,7 @@
   background-color: #ddd;
   /* Imagem default, será trocada via JS */
   background-size: cover;
-  background-position: top;
+  background-position: center;
   margin: 32px;
   border-radius: 24px;
 }
@@ -1480,6 +1484,8 @@
   justify-content: center;
   align-items: flex-start;
   color: var(--color-bg-white);
+  overflow: hidden;
+  max-height: 100%;
 }
 
 .close-popup-btn {
@@ -1517,6 +1523,88 @@
 
 .popup-text:last-child {
   margin-bottom: 0;
+}
+
+/* --- POPUP PLAN SELECTION --- */
+.plan-selection-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.plan-selection-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-width: 400px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: var(--color-bg-white);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.plan-selection-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  border-color: var(--color-primary-lime);
+}
+
+.plan-selection-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plan-label {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.plan-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.plan-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-white);
+}
+
+.plan-price small {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.selection-arrow {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.plan-selection-btn:hover .selection-arrow {
+  background: var(--color-primary-lime);
+  color: var(--color-primary-dark);
+  transform: translateX(4px);
+}
+
+.selection-arrow svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* --- SEÇÃO ESTATÍSTICAS (SPLIT) --- */
@@ -2858,6 +2946,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   .hero-bg img {
     width: 100%;
     min-height: 390px;
+    position: relative;
   }
 
   .hero-footer-row {
@@ -3060,10 +3149,11 @@ input[type=range]::-webkit-slider-thumb:hover {
     padding: 24px;
     box-sizing: border-box;
     order: 2;
+    gap: 32px;
   }
 
   .popup-title {
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 16px;
   }
 
@@ -3083,6 +3173,10 @@ input[type=range]::-webkit-slider-thumb:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .plan-selection-btn {
+    min-width: 270px;
   }
 
   /* Calculadora de ROI */
