@@ -1,0 +1,13 @@
+.no-scroll {
+    overflow: hidden !important;
+    height: 100vh !important;
+    touch-action: none !important;
+    -ms-overflow-style: none !important;
+    /* IE and Edge */
+    scrollbar-width: none !important;
+    /* Firefox */
+}
+
+.no-scroll::-webkit-scrollbar {
+    display: none !important;
+}

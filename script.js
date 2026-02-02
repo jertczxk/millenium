@@ -647,6 +647,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const type = btn.getAttribute('data-type');
         updatePopupContent(type);
 
+        // Stop Lenis Scroll
+        if (window.lenis) window.lenis.stop();
+
         // Se for tipo contato, inicializa o formulário e a animação do botão
         if (type === 'contact') {
             if (window.initPopupForm) window.initPopupForm();
@@ -708,6 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 isOpen = false;
                 body.classList.remove('no-scroll');
                 overlay.classList.remove('active');
+                if (window.lenis) window.lenis.start();
             }
         });
 
@@ -1026,6 +1030,8 @@ document.addEventListener("DOMContentLoaded", () => {
             smoothTouch: false,
             touchMultiplier: 2,
         });
+
+        window.lenis = lenis; // Expose to window for popup control
 
         // Conectar Lenis ao GSAP ScrollTrigger
         lenis.on('scroll', ScrollTrigger.update);

@@ -598,7 +598,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px var(--spacing-gutter) 80px var(--spacing-gutter);
+  padding: 80px 16px 80px var(--spacing-gutter);
   box-sizing: border-box;
   z-index: 2;
 }
@@ -698,8 +698,7 @@
 }
 
 .hero-bg img {
-  height: 85%;
-  width: 85%;
+  width: 80%;
   bottom: 0;
   right: 6%;
   position: absolute;
@@ -1326,6 +1325,11 @@
 
 /* Mobile */
 
+/* SCROLL LOCK */
+body.no-scroll {
+  overflow: hidden !important;
+}
+
 
 /* --- ABOUT SECTION --- */
 .about {
@@ -1725,7 +1729,6 @@
 .roi-calculator-section {
   font-family: var(--font-family-primary);
   padding: 60px var(--spacing-gutter);
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2989,7 +2992,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   /* Brands Section */
 
   .section-title {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .section-title br {
@@ -3152,10 +3155,11 @@ input[type=range]::-webkit-slider-thumb:hover {
 
   .popup-content-col {
     width: 100%;
-    padding: 24px;
+    padding: 48px 24px 32px 24px;
     box-sizing: border-box;
     order: 2;
-    gap: 32px;
+    gap: 24px;
+    overflow-y: auto;
   }
 
   .popup-title {
@@ -3182,7 +3186,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .plan-selection-btn {
-    min-width: 270px;
+    min-width: 250px;
   }
 
   /* Calculadora de ROI */
