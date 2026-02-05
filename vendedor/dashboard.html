@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | MilleniumPREV</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Close Button for Mobile -->
+        <button class="mobile-close-btn" onclick="closeMobileMenu()" title="Fechar Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Toggle Menu Button (Desktop) -->
+        <button class="menu-toggle" onclick="toggleMenu()" title="Recolher Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="sidebar-logo">
+            <img src="../img/logo.webp" alt="MilleniumPREV"
+                onerror="this.src='https://placehold.co/140x40/1a4d45/ffffff?text=MilleniumPREV'">
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link active">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                    <i class="fa-solid fa-chart-simple icon-right"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="salesPageNavLink" target="_blank">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Página de Vendas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="material.html" class="nav-link">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Material</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="metas.html" class="nav-link">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Metas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="calendario.html" class="nav-link">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Calendário</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="treinamentos.html" class="nav-link">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Treinamentos</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <ul class="nav-menu" style="margin-bottom: 24px;">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Suporte</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>João Gabriel</h4>
+                </div>
+                <a href="#" class="logout-btn" onclick="logoutSeller(); return false;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Olá, João Gabriel Jertczuk! <span class="premium-badge"><i class="fa-solid fa-star"></i> Vendedor
+                        Premium</span></h1>
+            </div>
+        </header>
+
+        <h2 class="section-title">Seus resultados esse mês</h2>
+
+        <!-- Metrics Grid -->
+        <section class="metrics-grid">
+            <div class="metric-card bg-green" id="metricCommission">
+                <div class="metric-header-simple">
+                    <span class="metric-label">Comissão</span>
+                </div>
+                <h3 class="metric-value-lg">R$ 0,00</h3>
+                <p class="metric-trend white"><i class="fa-solid fa-arrow-trend-up"></i> + 0%</p>
+            </div>
+
+            <div class="metric-card bg-green" id="metricSales">
+                <div class="metric-header-simple">
+                    <span class="metric-label">Vendas</span>
+                </div>
+                <h3 class="metric-value-lg">0 contratos</h3>
+                <p class="metric-trend white"><i class="fa-solid fa-arrow-trend-up"></i> + 0%</p>
+            </div>
+
+            <div class="metric-card bg-green" id="metricGoal">
+                <div class="metric-header-simple">
+                    <span class="metric-label">Meta do Mês</span>
+                </div>
+                <div class="meta-content">
+                    <h3 class="metric-value-lg">0%</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <p class="metric-detail">Carregando...</p>
+                </div>
+            </div>
+
+            <div class="metric-card bg-green" id="metricPageViews">
+                <div class="metric-header-simple">
+                    <span class="metric-label">Acessos a página</span>
+                </div>
+                <h3 class="metric-value-lg">0 acessos</h3>
+                <p class="metric-trend white"><i class="fa-solid fa-arrow-trend-up"></i> + 0%</p>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <h2 class="section-title">Ações rápidas</h2>
+        <section class="quick-actions">
+            <button class="action-card dark" id="btnAccessSalesPage">
+                <div class="action-content-centered">
+                    <p>Acessar Página de Vendas</p>
+                    <div class="action-icon">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                </div>
+            </button>
+
+            <button class="action-card dark" id="btnShareWhatsapp">
+                <div class="action-content-centered">
+                    <p>Compartilhar no Whatsapp</p>
+                    <div class="action-icon">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                </div>
+            </button>
+
+            <button class="action-card dark">
+                <div class="action-content-centered">
+                    <p>Cadastrar um Vendedor</p>
+                    <div class="action-icon">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+            </button>
+        </section>
+
+        <!-- Latest Materials -->
+        <h2 class="section-title">Últimos Materiais</h2>
+        <section class="materials-grid">
+            <div class="material-card instagram-post">
+                <div class="material-body">
+                    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=400&h=400&q=80"
+                        alt="Material 1">
+                    <div class="material-overlay">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Post Institucional</span>
+                    </div>
+                </div>
+                <div class="material-footer">
+                    <p>Divulgação Millenium 01</p>
+                    <button class="btn-download"><i class="fa-solid fa-download"></i></button>
+                </div>
+            </div>
+
+            <div class="material-card instagram-post">
+                <div class="material-body">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=400&h=400&q=80"
+                        alt="Material 2">
+                    <div class="material-overlay">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Benefícios Millenium</span>
+                    </div>
+                </div>
+                <div class="material-footer">
+                    <p>Vantagens MilleniumPREV</p>
+                    <button class="btn-download"><i class="fa-solid fa-download"></i></button>
+                </div>
+            </div>
+
+            <div class="material-card instagram-post">
+                <div class="material-body">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&h=400&q=80"
+                        alt="Material 3">
+                    <div class="material-overlay">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Depoimento Cliente</span>
+                    </div>
+                </div>
+                <div class="material-footer">
+                    <p>Cases de Sucesso</p>
+                    <button class="btn-download"><i class="fa-solid fa-download"></i></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- GSAP via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

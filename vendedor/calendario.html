@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário | MilleniumPREV</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Close Button for Mobile -->
+        <button class="mobile-close-btn" onclick="closeMobileMenu()" title="Fechar Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Toggle Menu Button (Desktop) -->
+        <button class="menu-toggle" onclick="toggleMenu()" title="Recolher Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="sidebar-logo">
+            <img src="../img/logo.webp" alt="MilleniumPREV"
+                onerror="this.src='https://placehold.co/140x40/1a4d45/ffffff?text=MilleniumPREV'">
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="salesPageNavLink" target="_blank">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Página de Vendas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="material.html" class="nav-link">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Material</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="metas.html" class="nav-link">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Metas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="calendario.html" class="nav-link active">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Calendário</span>
+                    <i class="fa-solid fa-chart-simple icon-right"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="treinamentos.html" class="nav-link">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Treinamentos</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <ul class="nav-menu" style="margin-bottom: 24px;">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Suporte</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>João Gabriel</h4>
+                </div>
+                <a href="#" class="logout-btn" onclick="logoutSeller(); return false;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Agenda</h1>
+                <p>Gerencie suas reuniões e compromissos.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary-action" id="btnNewEvent" onclick="openNewEventModal()">
+                    <i class="fa-solid fa-plus"></i> Novo Evento
+                </button>
+            </div>
+        </header>
+
+        <section class="calendar-container">
+            <div class="calendar-main">
+                <div class="calendar-header">
+                    <button class="btn-nav" id="btnPrevMonth" onclick="changeMonth(-1)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <h2 id="currentMonthYear">Fevereiro 2026</h2>
+                    <button class="btn-nav" id="btnNextMonth" onclick="changeMonth(1)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="calendar-grid-header">
+                    <span>Dom</span>
+                    <span>Seg</span>
+                    <span>Ter</span>
+                    <span>Qua</span>
+                    <span>Qui</span>
+                    <span>Sex</span>
+                    <span>Sáb</span>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Days will be generated dynamically -->
+                </div>
+            </div>
+
+            <div class="events-side">
+                <h3 class="subsection-title">Próximos Eventos</h3>
+                <div id="upcomingEventsList">
+                    <!-- Events will be populated dynamically -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Day Detail Modal (Notion Style) -->
+    <div id="dayModal" class="day-modal">
+        <div class="day-modal-content">
+            <div class="day-modal-header">
+                <div class="day-modal-date">
+                    <span class="day-modal-number" id="modalDayNumber">10</span>
+                    <div class="day-modal-info">
+                        <span class="day-modal-weekday" id="modalWeekday">Segunda-feira</span>
+                        <span class="day-modal-month" id="modalMonthYear">Fevereiro 2026</span>
+                    </div>
+                </div>
+                <button class="close-day-modal" onclick="closeDayModal()">&times;</button>
+            </div>
+
+            <div class="day-modal-body">
+                <div class="day-events-list" id="dayEventsList">
+                    <!-- Events for selected day will appear here -->
+                </div>
+
+                <div class="day-no-events" id="dayNoEvents" style="display: none;">
+                    <i class="fa-regular fa-calendar-xmark"></i>
+                    <p>Nenhum evento neste dia</p>
+                </div>
+
+                <button class="btn-add-event-day" onclick="openNewEventModal()">
+                    <i class="fa-solid fa-plus"></i> Adicionar Evento
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Event Modal -->
+    <div id="newEventModal" class="event-form-modal">
+        <div class="event-form-content">
+            <div class="event-form-header">
+                <h2><i class="fa-regular fa-calendar-plus"></i> Novo Evento</h2>
+                <button class="close-event-form" onclick="closeNewEventModal()">&times;</button>
+            </div>
+
+            <form id="newEventForm" onsubmit="saveEvent(event)">
+                <div class="form-group">
+                    <label class="form-label">Título do Evento</label>
+                    <input type="text" id="eventTitle" class="form-input" placeholder="Ex: Reunião com cliente"
+                        required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Data</label>
+                        <input type="date" id="eventDate" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Horário</label>
+                        <input type="time" id="eventTime" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Local / Link</label>
+                    <input type="text" id="eventLocation" class="form-input"
+                        placeholder="Ex: Google Meet, Escritório...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tipo de Evento</label>
+                    <div class="event-type-selector">
+                        <label class="event-type-option">
+                            <input type="radio" name="eventType" value="call" checked>
+                            <span class="event-type-badge call"><i class="fa-solid fa-phone"></i> Ligação</span>
+                        </label>
+                        <label class="event-type-option">
+                            <input type="radio" name="eventType" value="meeting">
+                            <span class="event-type-badge meeting"><i class="fa-solid fa-users"></i> Reunião</span>
+                        </label>
+                        <label class="event-type-option">
+                            <input type="radio" name="eventType" value="followup">
+                            <span class="event-type-badge followup"><i class="fa-solid fa-rotate"></i> Follow-up</span>
+                        </label>
+                        <label class="event-type-option">
+                            <input type="radio" name="eventType" value="training">
+                            <span class="event-type-badge training"><i class="fa-solid fa-graduation-cap"></i>
+                                Treinamento</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Cor do Evento</label>
+                    <div class="color-selector">
+                        <label class="color-option">
+                            <input type="radio" name="eventColor" value="green" checked>
+                            <span class="color-dot green"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="eventColor" value="blue">
+                            <span class="color-dot blue"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="eventColor" value="red">
+                            <span class="color-dot red"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="eventColor" value="orange">
+                            <span class="color-dot orange"></span>
+                        </label>
+                        <label class="color-option">
+                            <input type="radio" name="eventColor" value="purple">
+                            <span class="color-dot purple"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrição (opcional)</label>
+                    <textarea id="eventDescription" class="form-input" rows="3"
+                        placeholder="Detalhes adicionais..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeNewEventModal()">Cancelar</button>
+                    <button type="submit" class="btn-save-event">
+                        <i class="fa-solid fa-check"></i> Salvar Evento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- GSAP via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script src="script.js"></script>
+    <script>
+        // =================================
+        // CALENDAR PAGE LOGIC
+        // =================================
+
+        // Current date tracking
+        let currentYear = 2026;
+        let currentMonth = 1; // February (0-indexed)
+        let selectedDay = null;
+
+        // Events storage (will come from MySQL/localStorage)
+        let calendarEvents = [];
+
+        // Month names in Portuguese
+        const monthNames = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+
+        const weekdayNames = [
+            'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira',
+            'Quinta-feira', 'Sexta-feira', 'Sábado'
+        ];
+
+        // Initialize calendar on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEvents();
+            renderCalendar();
+            renderUpcomingEvents();
+        });
+
+        // Load events from localStorage or seller data
+        function loadEvents() {
+            const stored = localStorage.getItem('calendarEvents');
+            if (stored) {
+                calendarEvents = JSON.parse(stored);
+            } else {
+                // Default events from seller mock data
+                calendarEvents = [
+                    { id: 1, day: 2, month: 1, year: 2026, title: 'Follow-up Cliente A', time: '10:00', type: 'followup', color: 'red', location: 'Telefone' },
+                    { id: 2, day: 5, month: 1, year: 2026, title: 'Reunião Equipe', time: '14:00', type: 'meeting', color: 'blue', location: 'Google Meet' },
+                    { id: 3, day: 10, month: 1, year: 2026, title: 'Reunião de Equipe', time: '14:00', type: 'meeting', color: 'green', location: 'Google Meet' },
+                    { id: 4, day: 12, month: 1, year: 2026, title: 'Apresentação Cliente', time: '09:30', type: 'meeting', color: 'green', location: 'Presencial' },
+                    { id: 5, day: 15, month: 1, year: 2026, title: 'Treinamento Vendas', time: '16:00', type: 'training', color: 'blue', location: 'Online' }
+                ];
+                saveEvents();
+            }
+        }
+
+        // Save events to localStorage
+        function saveEvents() {
+            localStorage.setItem('calendarEvents', JSON.stringify(calendarEvents));
+        }
+
+        // Render the calendar grid
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthYearEl = document.getElementById('currentMonthYear');
+
+            // Update header
+            monthYearEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            // Get first day of month and total days
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+            // Today's date for highlighting
+            const today = new Date();
+            const isCurrentMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+
+            let html = '';
+
+            // Previous month days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                html += `<div class="day other-month" data-day="${day}" data-month="${currentMonth - 1}">${day}</div>`;
+            }
+
+            // Current month days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const isToday = isCurrentMonth && today.getDate() === day;
+                const events = getEventsForDay(day, currentMonth, currentYear);
+                const hasEvents = events.length > 0;
+
+                let dayClasses = 'day';
+                if (isToday) dayClasses += ' today';
+                if (hasEvents) dayClasses += ' has-event';
+
+                let eventDots = '';
+                if (hasEvents) {
+                    // Show up to 3 dots
+                    const dotsToShow = events.slice(0, 3);
+                    eventDots = dotsToShow.map(e => `<div class="event-dot ${e.color}"></div>`).join('');
+                }
+
+                html += `
+                    <div class="${dayClasses}" data-day="${day}" data-month="${currentMonth}" data-year="${currentYear}" onclick="openDayModal(${day})">
+                        ${day}
+                        ${eventDots ? `<div class="event-dots">${eventDots}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            // Next month days to fill grid (6 rows x 7 = 42)
+            const totalCells = 42;
+            const currentCells = firstDay + daysInMonth;
+            for (let i = 1; i <= totalCells - currentCells; i++) {
+                html += `<div class="day other-month" data-day="${i}" data-month="${currentMonth + 1}">${i}</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        // Get events for a specific day
+        function getEventsForDay(day, month, year) {
+            return calendarEvents.filter(e =>
+                e.day === day && e.month === month && e.year === year
+            ).sort((a, b) => a.time.localeCompare(b.time));
+        }
+
+        // Change month
+        function changeMonth(delta) {
+            currentMonth += delta;
+
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+
+            renderCalendar();
+            renderUpcomingEvents();
+        }
+
+        // Open day modal
+        function openDayModal(day) {
+            selectedDay = day;
+
+            const modal = document.getElementById('dayModal');
+            const dayNumber = document.getElementById('modalDayNumber');
+            const weekday = document.getElementById('modalWeekday');
+            const monthYear = document.getElementById('modalMonthYear');
+            const eventsList = document.getElementById('dayEventsList');
+            const noEvents = document.getElementById('dayNoEvents');
+
+            // Set date info
+            const date = new Date(currentYear, currentMonth, day);
+            dayNumber.textContent = day;
+            weekday.textContent = weekdayNames[date.getDay()];
+            monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            // Get events for this day
+            const events = getEventsForDay(day, currentMonth, currentYear);
+
+            if (events.length > 0) {
+                eventsList.style.display = 'block';
+                noEvents.style.display = 'none';
+
+                eventsList.innerHTML = events.map(e => `
+                    <div class="day-event-item">
+                        <div class="event-color-bar ${e.color}"></div>
+                        <div class="event-content">
+                            <div class="event-time">
+                                <i class="fa-regular fa-clock"></i> ${e.time}
+                            </div>
+                            <h4>${e.title}</h4>
+                            ${e.location ? `<p><i class="fa-solid fa-location-dot"></i> ${e.location}</p>` : ''}
+                        </div>
+                        <button class="btn-delete-event" onclick="deleteEvent(${e.id})" title="Excluir">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                eventsList.style.display = 'none';
+                noEvents.style.display = 'flex';
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close day modal
+        function closeDayModal() {
+            document.getElementById('dayModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Open new event modal
+        function openNewEventModal() {
+            closeDayModal();
+
+            const modal = document.getElementById('newEventModal');
+            const dateInput = document.getElementById('eventDate');
+
+            // Pre-fill date if a day was selected
+            if (selectedDay) {
+                const month = String(currentMonth + 1).padStart(2, '0');
+                const day = String(selectedDay).padStart(2, '0');
+                dateInput.value = `${currentYear}-${month}-${day}`;
+            } else {
+                // Default to today
+                const today = new Date();
+                dateInput.value = today.toISOString().split('T')[0];
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Focus on title
+            setTimeout(() => document.getElementById('eventTitle').focus(), 100);
+        }
+
+        // Close new event modal
+        function closeNewEventModal() {
+            document.getElementById('newEventModal').classList.remove('active');
+            document.getElementById('newEventForm').reset();
+            document.body.style.overflow = '';
+            selectedDay = null;
+        }
+
+        // Save new event
+        function saveEvent(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('eventTitle').value.trim();
+            const dateValue = document.getElementById('eventDate').value;
+            const time = document.getElementById('eventTime').value;
+            const location = document.getElementById('eventLocation').value.trim();
+            const type = document.querySelector('input[name="eventType"]:checked').value;
+            const color = document.querySelector('input[name="eventColor"]:checked').value;
+            const description = document.getElementById('eventDescription').value.trim();
+
+            if (!title || !dateValue || !time) {
+                alert('Por favor, preencha os campos obrigatórios.');
+                return;
+            }
+
+            const dateParts = dateValue.split('-');
+            const year = parseInt(dateParts[0]);
+            const month = parseInt(dateParts[1]) - 1;
+            const day = parseInt(dateParts[2]);
+
+            const newEvent = {
+                id: Date.now(),
+                day,
+                month,
+                year,
+                title,
+                time,
+                location,
+                type,
+                color,
+                description
+            };
+
+            calendarEvents.push(newEvent);
+            saveEvents();
+
+            // Update views
+            renderCalendar();
+            renderUpcomingEvents();
+            closeNewEventModal();
+
+            // Show success feedback
+            showToast('Evento criado com sucesso!');
+        }
+
+        // Delete event
+        function deleteEvent(eventId) {
+            if (!confirm('Deseja excluir este evento?')) return;
+
+            calendarEvents = calendarEvents.filter(e => e.id !== eventId);
+            saveEvents();
+
+            renderCalendar();
+            renderUpcomingEvents();
+            closeDayModal();
+
+            showToast('Evento excluído!');
+        }
+
+        // Render upcoming events sidebar
+        function renderUpcomingEvents() {
+            const container = document.getElementById('upcomingEventsList');
+
+            // Get events from today onwards
+            const today = new Date();
+            const upcoming = calendarEvents.filter(e => {
+                const eventDate = new Date(e.year, e.month, e.day);
+                return eventDate >= new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            }).sort((a, b) => {
+                const dateA = new Date(a.year, a.month, a.day, ...a.time.split(':'));
+                const dateB = new Date(b.year, b.month, b.day, ...b.time.split(':'));
+                return dateA - dateB;
+            }).slice(0, 5);
+
+            if (upcoming.length === 0) {
+                container.innerHTML = `
+                    <div class="no-upcoming-events">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <p>Nenhum evento próximo</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = upcoming.map(e => `
+                <div class="event-card" onclick="goToEvent(${e.day}, ${e.month}, ${e.year})">
+                    <div class="event-date">
+                        <span class="day-num">${e.day}</span>
+                        <span class="month-short">${monthNames[e.month].substring(0, 3).toUpperCase()}</span>
+                    </div>
+                    <div class="event-details">
+                        <h4>${e.title}</h4>
+                        <p>${e.time}${e.location ? ' - ' + e.location : ''}</p>
+                    </div>
+                    <div class="event-indicator ${e.color}"></div>
+                </div>
+            `).join('');
+        }
+
+        // Navigate to event's month and open day modal
+        function goToEvent(day, month, year) {
+            currentMonth = month;
+            currentYear = year;
+            renderCalendar();
+            openDayModal(day);
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = `<i class="fa-solid fa-check-circle"></i> ${message}`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Close modals on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDayModal();
+                closeNewEventModal();
+            }
+        });
+
+        // Close modals on backdrop click
+        document.getElementById('dayModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'dayModal') closeDayModal();
+        });
+
+        document.getElementById('newEventModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'newEventModal') closeNewEventModal();
+        });
+    </script>
+</body>
+
+</html>

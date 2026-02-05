@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Vendedor | MilleniumPREV</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="login-body">
+
+    <div class="login-container">
+        <div class="login-logo-top">
+            <img src="../img/logo.webp" alt="MilleniumPREV Logo"
+                onerror="this.src='https://placehold.co/150x50/16514b/ffffff?text=MilleniumPREV'">
+        </div>
+
+        <div class="login-card">
+            <h1 class="login-title">Painel do Vendedor</h1>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="cpf" class="form-label">Digite o seu CPF</label>
+                    <input type="text" id="cpf" class="form-input cpf-input" placeholder="000.000.000-00" maxlength="14"
+                        required>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    ACESSAR PAINEL
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <p class="login-footer-text">Primeiro acesso? Fale com seu gestor para liberar seu cadastro.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

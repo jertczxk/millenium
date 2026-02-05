@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamentos | MilleniumPREV</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Close Button for Mobile -->
+        <button class="mobile-close-btn" onclick="closeMobileMenu()" title="Fechar Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Toggle Menu Button (Desktop) -->
+        <button class="menu-toggle" onclick="toggleMenu()" title="Recolher Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="sidebar-logo">
+            <img src="../img/logo.webp" alt="MilleniumPREV"
+                onerror="this.src='https://placehold.co/140x40/1a4d45/ffffff?text=MilleniumPREV'">
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="salesPageNavLink" target="_blank">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Página de Vendas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="material.html" class="nav-link">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Material</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="metas.html" class="nav-link">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Metas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="calendario.html" class="nav-link">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Calendário</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="treinamentos.html" class="nav-link active">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Treinamentos</span>
+                    <i class="fa-solid fa-chart-simple icon-right"></i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <ul class="nav-menu" style="margin-bottom: 24px;">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Suporte</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>João</h4>
+                </div>
+                <a href="#" class="logout-btn" onclick="logoutSeller(); return false;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Academy MilleniumPREV</h1>
+                <p>Desenvolva suas habilidades e alcance novos resultados.</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar treinamentos..." id="searchTraining">
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Overview -->
+        <section class="training-progress-overview">
+            <div class="progress-card-main">
+                <div class="progress-info">
+                    <div class="progress-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="progress-text">
+                        <h3>Seu Progresso</h3>
+                        <p>Continue aprendendo para melhorar suas vendas!</p>
+                    </div>
+                </div>
+                <div class="progress-stats">
+                    <div class="stat">
+                        <span class="stat-value" id="completedCourses">3</span>
+                        <span class="stat-label">Cursos Completos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="totalHours">8h</span>
+                        <span class="stat-label">Horas de Estudo</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="exercisesCompleted">12</span>
+                        <span class="stat-label">Exercícios</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="certificatesEarned">2</span>
+                        <span class="stat-label">Certificados</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Continue Watching -->
+        <section class="continue-section">
+            <h2 class="section-title">Continue de onde parou</h2>
+            <div class="continue-card" onclick="openLesson('vendas', 2)">
+                <div class="continue-thumbnail">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop"
+                        alt="Técnicas de Fechamento">
+                    <div class="play-overlay">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <div class="duration-badge">12:45</div>
+                </div>
+                <div class="continue-info">
+                    <span class="course-category">Técnicas de Vendas</span>
+                    <h3>Aula 3: Técnicas de Fechamento</h3>
+                    <p>Aprenda as melhores estratégias para fechar vendas com confiança.</p>
+                    <div class="lesson-progress">
+                        <div class="progress-bar-thin">
+                            <div class="fill" style="width: 45%"></div>
+                        </div>
+                        <span>45% concluído</span>
+                    </div>
+                </div>
+                <button class="btn-continue">
+                    <i class="fa-solid fa-play"></i> Continuar
+                </button>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories-section">
+            <h2 class="section-title">Categorias de Treinamento</h2>
+            <div class="categories-grid">
+                <div class="category-card" data-category="vendas" onclick="filterByCategory('vendas')">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <h3>Técnicas de Vendas</h3>
+                    <p>8 cursos • 24 aulas</p>
+                </div>
+                <div class="category-card" data-category="planos" onclick="filterByCategory('planos')">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                        <i class="fa-solid fa-file-contract"></i>
+                    </div>
+                    <h3>Conhecimento de Planos</h3>
+                    <p>5 cursos • 18 aulas</p>
+                </div>
+                <div class="category-card" data-category="atendimento" onclick="filterByCategory('atendimento')">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3>Atendimento ao Cliente</h3>
+                    <p>6 cursos • 20 aulas</p>
+                </div>
+                <div class="category-card" data-category="followup" onclick="filterByCategory('followup')">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);">
+                        <i class="fa-solid fa-rotate"></i>
+                    </div>
+                    <h3>Follow-up & Retenção</h3>
+                    <p>4 cursos • 12 aulas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Courses -->
+        <section class="courses-section">
+            <div class="section-header">
+                <h2 class="section-title">Cursos em Destaque</h2>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">Todos</button>
+                    <button class="filter-tab" data-filter="new">Novos</button>
+                    <button class="filter-tab" data-filter="popular">Populares</button>
+                </div>
+            </div>
+
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Course 1 -->
+                <div class="course-card" data-category="vendas" data-type="popular">
+                    <div class="course-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=225&fit=crop"
+                            alt="Dominando Vendas">
+                        <div class="course-badge new">Novo</div>
+                        <div class="course-duration">2h 30min</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span class="course-category-tag vendas">Vendas</span>
+                            <div class="course-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <h3>Dominando a Arte das Vendas</h3>
+                        <p>Aprenda técnicas avançadas de negociação e fechamento.</p>
+                        <div class="course-footer">
+                            <div class="course-lessons">
+                                <i class="fa-solid fa-play-circle"></i>
+                                <span>8 aulas</span>
+                            </div>
+                            <button class="btn-start-course" onclick="openCourse('vendas-master')">
+                                Iniciar <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card" data-category="planos" data-type="popular">
+                    <div class="course-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=225&fit=crop"
+                            alt="Planos MilleniumPREV">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span class="course-category-tag planos">Planos</span>
+                            <div class="course-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <h3>Guia Completo dos Planos</h3>
+                        <p>Conheça todos os detalhes dos planos Prata, Ouro, Pet e Company.</p>
+                        <div class="course-footer">
+                            <div class="course-lessons">
+                                <i class="fa-solid fa-play-circle"></i>
+                                <span>6 aulas</span>
+                            </div>
+                            <button class="btn-start-course" onclick="openCourse('planos-guide')">
+                                Iniciar <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card" data-category="atendimento" data-type="new">
+                    <div class="course-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=225&fit=crop"
+                            alt="Atendimento Premium">
+                        <div class="course-badge new">Novo</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span class="course-category-tag atendimento">Atendimento</span>
+                            <div class="course-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <span>4.7</span>
+                            </div>
+                        </div>
+                        <h3>Atendimento de Excelência</h3>
+                        <p>Transforme cada interação em uma experiência memorável.</p>
+                        <div class="course-footer">
+                            <div class="course-lessons">
+                                <i class="fa-solid fa-play-circle"></i>
+                                <span>5 aulas</span>
+                            </div>
+                            <button class="btn-start-course" onclick="openCourse('atendimento-excellence')">
+                                Iniciar <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card" data-category="followup" data-type="popular">
+                    <div class="course-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=225&fit=crop"
+                            alt="Follow-up Estratégico">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span class="course-category-tag followup">Follow-up</span>
+                            <div class="course-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <h3>Follow-up Estratégico</h3>
+                        <p>Aprenda a fazer follow-up sem ser invasivo e converter mais.</p>
+                        <div class="course-footer">
+                            <div class="course-lessons">
+                                <i class="fa-solid fa-play-circle"></i>
+                                <span>4 aulas</span>
+                            </div>
+                            <button class="btn-start-course" onclick="openCourse('followup-strategic')">
+                                Iniciar <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lesson Modal -->
+    <div id="lessonModal" class="lesson-modal">
+        <div class="lesson-modal-content">
+            <button class="close-lesson" onclick="closeLessonModal()">&times;</button>
+
+            <div class="lesson-video-container">
+                <div class="video-placeholder" id="videoContainer">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=450&fit=crop"
+                        alt="Video Thumbnail" id="lessonThumbnail">
+                    <div class="play-btn-large" onclick="playVideo()">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-details">
+                <div class="lesson-header">
+                    <span class="lesson-category" id="lessonCategory">Técnicas de Vendas</span>
+                    <h2 id="lessonTitle">Aula 3: Técnicas de Fechamento</h2>
+                    <p id="lessonDescription">Aprenda as melhores estratégias para fechar vendas com confiança e
+                        aumentar sua taxa de conversão.</p>
+                </div>
+
+                <div class="lesson-tabs">
+                    <button class="lesson-tab active" data-tab="content">Conteúdo</button>
+                    <button class="lesson-tab" data-tab="resources">Recursos</button>
+                    <button class="lesson-tab" data-tab="exercise">Exercício</button>
+                </div>
+
+                <div class="lesson-tab-content active" id="contentTab">
+                    <div class="lesson-chapters">
+                        <div class="chapter completed">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Introdução ao Fechamento</span>
+                            <span class="chapter-time">2:30</span>
+                        </div>
+                        <div class="chapter completed">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Identificando Sinais de Compra</span>
+                            <span class="chapter-time">4:15</span>
+                        </div>
+                        <div class="chapter current">
+                            <i class="fa-solid fa-play-circle"></i>
+                            <span>Técnicas de Fechamento</span>
+                            <span class="chapter-time">6:00</span>
+                        </div>
+                        <div class="chapter">
+                            <i class="fa-regular fa-circle"></i>
+                            <span>Lidando com Objeções</span>
+                            <span class="chapter-time">5:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-tab-content" id="resourcesTab">
+                    <div class="resources-list">
+                        <div class="resource-item">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span>Checklist de Fechamento.pdf</span>
+                            <button class="btn-download-sm"><i class="fa-solid fa-download"></i></button>
+                        </div>
+                        <div class="resource-item">
+                            <i class="fa-solid fa-file-word"></i>
+                            <span>Scripts de Vendas.docx</span>
+                            <button class="btn-download-sm"><i class="fa-solid fa-download"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-tab-content" id="exerciseTab">
+                    <div class="exercise-container" id="exerciseContainer">
+                        <!-- Exercise will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="lesson-navigation">
+                <button class="btn-nav-lesson" id="prevLesson">
+                    <i class="fa-solid fa-chevron-left"></i> Aula Anterior
+                </button>
+                <button class="btn-complete-lesson" id="completeLesson" onclick="completeLesson()">
+                    <i class="fa-solid fa-check"></i> Marcar como Concluída
+                </button>
+                <button class="btn-nav-lesson" id="nextLesson">
+                    Próxima Aula <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercise Result Modal -->
+    <div id="exerciseResultModal" class="exercise-result-modal">
+        <div class="exercise-result-content">
+            <div class="result-icon" id="resultIcon">
+                <i class="fa-solid fa-check-circle"></i>
+            </div>
+            <h2 id="resultTitle">Parabéns!</h2>
+            <p id="resultMessage">Você acertou 4 de 5 questões.</p>
+            <div class="result-score">
+                <span class="score-value" id="scoreValue">80%</span>
+                <span class="score-label">Pontuação</span>
+            </div>
+            <div class="result-actions">
+                <button class="btn-retry" onclick="retryExercise()">Tentar Novamente</button>
+                <button class="btn-continue-lesson" onclick="closeExerciseResult()">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSAP via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script src="script.js"></script>
+    <script>
+        // Training Page Specific Logic
+
+        // Exercise Data (will come from MySQL)
+        const exercisesData = {
+            'vendas-3': {
+                title: 'Teste seus conhecimentos sobre Técnicas de Fechamento',
+                questions: [
+                    {
+                        question: 'Qual é o primeiro passo para um fechamento bem-sucedido?',
+                        options: [
+                            'Oferecer desconto imediatamente',
+                            'Identificar os sinais de compra do cliente',
+                            'Pressionar o cliente para decidir',
+                            'Falar sobre a concorrência'
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: 'O que fazer quando o cliente diz "preciso pensar"?',
+                        options: [
+                            'Desistir da venda',
+                            'Perguntar se há alguma preocupação específica',
+                            'Oferecer mais desconto',
+                            'Ligar novamente no dia seguinte'
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: 'Qual técnica é mais eficaz para criar urgência?',
+                        options: [
+                            'Mentir sobre estoque',
+                            'Destacar benefícios exclusivos com prazo',
+                            'Pressionar com ligações constantes',
+                            'Ignorar as objeções do cliente'
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: 'Como lidar com a objeção de preço?',
+                        options: [
+                            'Concordar que é caro',
+                            'Focar no valor e benefícios, não no preço',
+                            'Dar desconto sem questionar',
+                            'Dizer que a concorrência é pior'
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: 'Qual é a melhor forma de finalizar uma negociação?',
+                        options: [
+                            'Perguntar: "Você quer comprar?"',
+                            'Assumir a venda: "Vou preparar o contrato"',
+                            'Esperar o cliente decidir sozinho',
+                            'Enviar proposta por e-mail e esperar'
+                        ],
+                        correct: 1
+                    }
+                ]
+            }
+        };
+
+        let currentExercise = null;
+        let userAnswers = [];
+
+        // Filter courses by category
+        function filterByCategory(category) {
+            const cards = document.querySelectorAll('.course-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update active category
+            document.querySelectorAll('.category-card').forEach(cat => {
+                cat.classList.remove('active');
+                if (cat.dataset.category === category) {
+                    cat.classList.add('active');
+                }
+            });
+        }
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+                const cards = document.querySelectorAll('.course-card');
+
+                cards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else if (card.dataset.type === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Open Course
+        function openCourse(courseId) {
+            openLesson(courseId, 1);
+        }
+
+        // Open Lesson Modal
+        function openLesson(courseId, lessonNumber) {
+            const modal = document.getElementById('lessonModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Load exercise for this lesson
+            loadExercise('vendas-3');
+        }
+
+        // Close Lesson Modal
+        function closeLessonModal() {
+            const modal = document.getElementById('lessonModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Lesson Tabs
+        document.querySelectorAll('.lesson-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.lesson-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.lesson-tab-content').forEach(c => c.classList.remove('active'));
+
+                this.classList.add('active');
+                const tabId = this.dataset.tab + 'Tab';
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Load Exercise
+        function loadExercise(exerciseId) {
+            const exercise = exercisesData[exerciseId];
+            if (!exercise) return;
+
+            currentExercise = exercise;
+            userAnswers = new Array(exercise.questions.length).fill(null);
+
+            const container = document.getElementById('exerciseContainer');
+            container.innerHTML = `
+                <div class="exercise-header">
+                    <h3><i class="fa-solid fa-brain"></i> ${exercise.title}</h3>
+                    <div class="exercise-progress">
+                        <span id="questionProgress">Questão 1 de ${exercise.questions.length}</span>
+                    </div>
+                </div>
+                <div class="exercise-questions" id="questionsContainer"></div>
+                <div class="exercise-actions">
+                    <button class="btn-prev-question" id="prevQuestion" onclick="prevQuestion()" disabled>
+                        <i class="fa-solid fa-chevron-left"></i> Anterior
+                    </button>
+                    <button class="btn-next-question" id="nextQuestion" onclick="nextQuestion()">
+                        Próxima <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    <button class="btn-submit-exercise" id="submitExercise" onclick="submitExercise()" style="display: none;">
+                        <i class="fa-solid fa-check"></i> Enviar Respostas
+                    </button>
+                </div>
+            `;
+
+            renderQuestion(0);
+        }
+
+        let currentQuestionIndex = 0;
+
+        function renderQuestion(index) {
+            const question = currentExercise.questions[index];
+            const container = document.getElementById('questionsContainer');
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <p class="question-text">${index + 1}. ${question.question}</p>
+                    <div class="options-list">
+                        ${question.options.map((option, i) => `
+                            <label class="option-item ${userAnswers[index] === i ? 'selected' : ''}">
+                                <input type="radio" name="question-${index}" value="${i}" 
+                                    ${userAnswers[index] === i ? 'checked' : ''}
+                                    onchange="selectAnswer(${index}, ${i})">
+                                <span class="option-marker">${String.fromCharCode(65 + i)}</span>
+                                <span class="option-text">${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Update navigation
+            document.getElementById('questionProgress').textContent =
+                `Questão ${index + 1} de ${currentExercise.questions.length}`;
+
+            document.getElementById('prevQuestion').disabled = index === 0;
+
+            const isLast = index === currentExercise.questions.length - 1;
+            document.getElementById('nextQuestion').style.display = isLast ? 'none' : 'flex';
+            document.getElementById('submitExercise').style.display = isLast ? 'flex' : 'none';
+        }
+
+        function selectAnswer(questionIndex, answerIndex) {
+            userAnswers[questionIndex] = answerIndex;
+
+            // Update visual selection
+            document.querySelectorAll('.option-item').forEach((item, i) => {
+                item.classList.toggle('selected', i === answerIndex);
+            });
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentExercise.questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion(currentQuestionIndex);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion(currentQuestionIndex);
+            }
+        }
+
+        function submitExercise() {
+            // Calculate score
+            let correct = 0;
+            currentExercise.questions.forEach((q, i) => {
+                if (userAnswers[i] === q.correct) correct++;
+            });
+
+            const percentage = Math.round((correct / currentExercise.questions.length) * 100);
+
+            // Show result modal
+            const resultModal = document.getElementById('exerciseResultModal');
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMessage = document.getElementById('resultMessage');
+            const scoreValue = document.getElementById('scoreValue');
+
+            if (percentage >= 80) {
+                resultIcon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+                resultIcon.className = 'result-icon success';
+                resultTitle.textContent = 'Excelente!';
+            } else if (percentage >= 60) {
+                resultIcon.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
+                resultIcon.className = 'result-icon good';
+                resultTitle.textContent = 'Bom trabalho!';
+            } else {
+                resultIcon.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
+                resultIcon.className = 'result-icon retry';
+                resultTitle.textContent = 'Continue tentando!';
+            }
+
+            resultMessage.textContent = `Você acertou ${correct} de ${currentExercise.questions.length} questões.`;
+            scoreValue.textContent = `${percentage}%`;
+
+            resultModal.classList.add('active');
+        }
+
+        function retryExercise() {
+            document.getElementById('exerciseResultModal').classList.remove('active');
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentExercise.questions.length).fill(null);
+            renderQuestion(0);
+        }
+
+        function closeExerciseResult() {
+            document.getElementById('exerciseResultModal').classList.remove('active');
+        }
+
+        function completeLesson() {
+            alert('Aula marcada como concluída! ✅');
+            closeLessonModal();
+        }
+
+        function playVideo() {
+            alert('Video player seria inicializado aqui (integração com Vimeo/YouTube)');
+        }
+
+        // Search functionality
+        document.getElementById('searchTraining')?.addEventListener('input', function (e) {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.course-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(query) || desc.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

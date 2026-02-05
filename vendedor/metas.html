@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Metas | MilleniumPREV</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Close Button for Mobile -->
+        <button class="mobile-close-btn" onclick="closeMobileMenu()" title="Fechar Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Toggle Menu Button (Desktop) -->
+        <button class="menu-toggle" onclick="toggleMenu()" title="Recolher Menu">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="sidebar-logo">
+            <img src="../img/logo.webp" alt="MilleniumPREV"
+                onerror="this.src='https://placehold.co/140x40/1a4d45/ffffff?text=MilleniumPREV'">
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Início</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="salesPageNavLink" target="_blank">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Página de Vendas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="material.html" class="nav-link">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Material</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="metas.html" class="nav-link active">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Metas</span>
+                    <i class="fa-solid fa-chart-simple icon-right"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="calendario.html" class="nav-link">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>Calendário</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="treinamentos.html" class="nav-link">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Treinamentos</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <ul class="nav-menu" style="margin-bottom: 24px;">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <span>Suporte</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h4>João Gabriel</h4>
+                </div>
+                <a href="#" class="logout-btn" onclick="logoutSeller(); return false;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Painel de Metas</h1>
+                <p>Acompanhe seu desempenho e alcance novos patamares.</p>
+            </div>
+        </header>
+
+        <!-- Insights & Funnel -->
+        <section class="insights-grid">
+            <div class="insight-card">
+                <h3><i class="fa-solid fa-lightbulb"></i> Insight do Dia</h3>
+                <p>Vendedores que realizam follow-up em contatos de até 3 dias atrás aumentam sua conversão em
+                    <strong>35%</strong>. Que tal revisar sua lista de contatos hoje?
+                </p>
+            </div>
+
+            <div class="funnel-card">
+                <h3 class="subsection-title" style="margin-bottom: 0;">Funil de Conversão</h3>
+                <div class="funnel-steps">
+                    <div class="funnel-line"></div>
+
+                    <div class="funnel-step completed" id="funnelApproached">
+                        <div class="step-circle"><i class="fa-solid fa-users"></i></div>
+                        <span class="step-label">Abordados</span>
+                        <span class="step-value">0 / 0</span>
+                    </div>
+
+                    <div class="funnel-step active" id="funnelNegotiating">
+                        <div class="step-circle"><i class="fa-solid fa-file-signature"></i></div>
+                        <span class="step-label">Em negociação</span>
+                        <span class="step-value">0 / 0</span>
+                    </div>
+
+                    <div class="funnel-step" id="funnelClosed">
+                        <div class="step-circle"><i class="fa-solid fa-handshake"></i></div>
+                        <span class="step-label">Fechamentos</span>
+                        <span class="step-value">0 / 0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Goal Section -->
+        <section class="goal-overview">
+            <div class="goal-card-large">
+                <div class="goal-header">
+                    <div>
+                        <h2>Meta Mensal de Vendas</h2>
+                        <p id="goalMonth">Carregando...</p>
+                    </div>
+                    <div class="goal-badge">
+                        <i class="fa-solid fa-trophy"></i> Em andamento
+                    </div>
+                </div>
+
+                <div class="goal-progress-huge">
+                    <div class="circular-chart" data-percent="0">
+                        <svg viewBox="0 0 36 36" class="circular-chart-svg">
+                            <path class="circle-bg"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="circle" stroke-dasharray="0, 100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="percentage" id="goalPercentage">0%</div>
+                    </div>
+                    <div class="goal-stats">
+                        <div class="stat-item">
+                            <span class="label">Objetivo</span>
+                            <span class="value" id="goalObjective">0 Contratos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">Realizado</span>
+                            <span class="value" id="goalAchieved">0 Contratos</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">Faltam</span>
+                            <span class="value" id="goalRemaining">0 Contratos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="goal-breakdown">
+                <h3 class="subsection-title">Detalhamento</h3>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-info">
+                        <span class="breakdown-label">Vendas Planos Ouro</span>
+                        <span class="breakdown-value">15 / 20</span>
+                    </div>
+                    <div class="progress-bar-sm">
+                        <div class="fill" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-info">
+                        <span class="breakdown-label">Vendas Planos Pet</span>
+                        <span class="breakdown-value">5 / 5</span>
+                    </div>
+                    <div class="progress-bar-sm">
+                        <div class="fill" style="width: 100%; background: #2ecc71;"></div>
+                    </div>
+                </div>
+
+                <div class="breakdown-item">
+                    <div class="breakdown-info">
+                        <span class="breakdown-label">Vendas Planos Company</span>
+                        <span class="breakdown-value">3 / 5</span>
+                    </div>
+                    <div class="progress-bar-sm">
+                        <div class="fill" style="width: 60%; background: #f1c40f;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Section -->
+        <h2 class="section-title" style="margin-top: 40px;">Recompensas</h2>
+        <section class="rewards-grid">
+            <div class="reward-card unlocked">
+                <div class="reward-icon"><i class="fa-solid fa-medal"></i></div>
+                <h3>Vendedor Iniciante</h3>
+                <p>Realizar a primeira venda.</p>
+                <div class="status">Conquistado</div>
+            </div>
+
+            <div class="reward-card unlocked">
+                <div class="reward-icon"><i class="fa-solid fa-star"></i></div>
+                <h3>Vendedor Premium</h3>
+                <p>Atingir 20 vendas no mês.</p>
+                <div class="status">Conquistado</div>
+            </div>
+
+            <div class="reward-card locked">
+                <div class="reward-icon"><i class="fa-solid fa-crown"></i></div>
+                <h3>Top 1 do Mês</h3>
+                <p>Ser o vendedor com mais vendas.</p>
+                <div class="status">Bloqueado</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- GSAP via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

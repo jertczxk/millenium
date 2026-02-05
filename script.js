@@ -327,13 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
             stagger: { each: 0.4, from: "random" }
         });
     }
-
-    // 5.2 BOTÃO CTA HOVER (Dark Button) - Aplica a TODOS os botões .btn-action
-    const btnActions = document.querySelectorAll('.btn-action');
-
-    // 5.2 BOTÃO CTA HOVER (Legacy Removal - Consolidated below)
-    // Code removed to prevent duplication
-
 });
 
 // 5.3 STACK DE USUÁRIOS
@@ -472,7 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // --- NOVO TIPO: CONTATO ---
         contact: {
             title: "Tem alguma dúvida sobre a MilleniumPREV?",
-            image: "img/atendente.png",
+            image: "img/atendente.webp",
             type: "html",
             description: "Preencha abaixo e converse direto no WhatsApp com um especialista que vai entender suas necessidades e apresentar a melhor solução.",
             htmlContent: `
@@ -1070,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================
-   7. BUTTON ANIMATIONS (Centralized)
+   7. BUTTON ANIMATIONS
    ========================================= */
 document.addEventListener("DOMContentLoaded", () => {
 
