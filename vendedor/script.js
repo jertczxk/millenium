@@ -1,4 +1,91 @@
 // GSAP Animations and Dashboard Logic
+
+// =================================
+// MOCK DATA - Replace with MySQL API
+// =================================
+const MOCK_SELLER_DB = {
+    // Basic Info (from `sellers` table)
+    id: 40,
+    slug: 'vendedor40',
+    name: 'João Gabriel Jertczuk',
+    firstName: 'João',
+    email: 'joao@example.com',
+    phone: '(41) 99999-9999',
+    avatar: null, // URL or null for default
+    isPremium: true,
+    commissionRate: 0.15, // 15%
+    createdAt: '2024-01-15',
+
+    // Dashboard Metrics (from `seller_metrics` table)
+    metrics: {
+        commission: {
+            value: 850.00,
+            trend: 14, // percentage change
+            trendUp: true
+        },
+        sales: {
+            contracts: 23,
+            trend: 5,
+            trendUp: true
+        },
+        goal: {
+            current: 23,
+            target: 30,
+            percentage: 70, // (23/30)*100
+            remaining: 7
+        },
+        pageViews: {
+            count: 156,
+            trend: 22,
+            trendUp: true
+        }
+    },
+
+    // Goals Data (from `seller_goals` table)
+    goals: {
+        monthly: {
+            month: 'Fevereiro 2026',
+            objective: 30,
+            achieved: 23,
+            percentage: 70,
+            remaining: 7,
+            status: 'in_progress' // 'completed', 'in_progress', 'failed'
+        },
+        funnel: {
+            approached: { current: 85, target: 100 },
+            negotiating: { current: 42, target: 50 },
+            closed: { current: 23, target: 30 }
+        },
+        breakdown: [
+            { label: 'Vendas Planos Ouro', current: 15, target: 20, percentage: 75, color: '#81bb3f' },
+            { label: 'Vendas Planos Pet', current: 5, target: 5, percentage: 100, color: '#2ecc71' },
+            { label: 'Vendas Planos Company', current: 3, target: 5, percentage: 60, color: '#f1c40f' }
+        ],
+        rewards: [
+            { id: 1, name: 'Vendedor Iniciante', description: 'Realizar a primeira venda.', unlocked: true, icon: 'fa-medal' },
+            { id: 2, name: 'Vendedor Premium', description: 'Atingir 20 vendas no mês.', unlocked: true, icon: 'fa-star' },
+            { id: 3, name: 'Top 1 do Mês', description: 'Ser o vendedor com mais vendas.', unlocked: false, icon: 'fa-crown' }
+        ]
+    },
+
+    // Calendar Events (from `seller_events` table)
+    calendar: {
+        currentMonth: 'Fevereiro 2026',
+        events: [
+            { id: 1, day: 2, title: 'Follow-up Cliente A', time: '10:00', type: 'call', color: 'red' },
+            { id: 2, day: 5, title: 'Reunião Equipe', time: '14:00', type: 'meeting', color: 'blue' },
+            { id: 3, day: 10, title: 'Reunião de Equipe', time: '14:00', location: 'Google Meet', color: 'green' },
+            { id: 4, day: 12, title: 'Apresentação Cliente', time: '09:30', location: 'Presencial', color: 'green' },
+            { id: 5, day: 15, title: 'Treinamento Vendas', time: '16:00', location: 'Online', color: 'blue' }
+        ],
+        upcomingEvents: [
+            { day: 10, month: 'FEV', title: 'Reunião de Equipe', time: '14:00', location: 'Google Meet' },
+            { day: 12, month: 'FEV', title: 'Apresentação Cliente', time: '09:30', location: 'Presencial' },
+            { day: 15, month: 'FEV', title: 'Treinamento Vendas', time: '16:00', location: 'Online' }
+        ]
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // =================================
@@ -6,18 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // (Prepared for MySQL integration)
     // =================================
 
-    // Mock seller data - will be replaced by MySQL fetch
+    // Check authentication for protected pages
+    if (!checkAuth()) return;
+
+    // Get seller data from mock/localStorage
     const currentSeller = getSellerData();
 
     // Initialize seller-specific elements
-    if (currentSeller) {
+    if (currentSeller && typeof initSellerDashboard === 'function') {
         initSellerDashboard(currentSeller);
     }
 
     // Initialize Animations
     initSmoothScroll();
     initAnimations();
-    initMarquee();
+    if (typeof initMarquee === 'function') initMarquee();
+    if (typeof initPlansStacking === 'function') initPlansStacking();
+    if (typeof initFooterMarquee === 'function') initFooterMarquee();
 
     // CPF Masking
     const cpfInput = document.getElementById('cpf');
@@ -190,6 +282,15 @@ function handleLogin(event) {
         btn.disabled = true;
         btn.style.opacity = '0.8';
 
+        // For local testing: Simulate successful login for any valid CPF
+        // In production: Validate against API
+
+        // Create a session for the mock seller
+        const sessionSeller = { ...MOCK_SELLER_DB }; // Clone mock data
+        sessionSeller.cpf = cleanCpf; // Assign input CPF to allow "any user"
+
+        localStorage.setItem('currentSeller', JSON.stringify(sessionSeller));
+
         setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 800);
@@ -316,7 +417,6 @@ function shareWhatsapp() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
     // 1. BTN-ACTION (Dark Theme)
     const startDarkButtons = document.querySelectorAll('.btn-action');
     startDarkButtons.forEach(btn => {
@@ -640,9 +740,9 @@ function initFooterMarquee() {
 }
 
 // Ensure Footer Marquee runs
-document.addEventListener('DOMContentLoaded', () => {
-    initFooterMarquee();
-});
+// document.addEventListener('DOMContentLoaded', () => {
+// initFooterMarquee();
+// }); This is now handled in the main listener
 
 function initSmoothScroll() {
     // --- SMOOTH SCROLL (LENIS + GSAP) ---
@@ -712,98 +812,7 @@ function getSellerData() {
         return JSON.parse(seller);
     }
 
-    // =================================
-    // MOCK DATA - Replace with MySQL API
-    // =================================
-    // TODO: Replace this with: fetch('/api/seller/current').then(res => res.json())
-
-    const mockSeller = {
-        // Basic Info (from `sellers` table)
-        id: 40,
-        slug: 'vendedor40',
-        name: 'João Gabriel Jertczuk',
-        firstName: 'João',
-        email: 'joao@example.com',
-        phone: '(41) 99999-9999',
-        avatar: null, // URL or null for default
-        isPremium: true,
-        commissionRate: 0.15, // 15%
-        createdAt: '2024-01-15',
-
-        // Dashboard Metrics (from `seller_metrics` table)
-        metrics: {
-            commission: {
-                value: 850.00,
-                trend: 14, // percentage change
-                trendUp: true
-            },
-            sales: {
-                contracts: 23,
-                trend: 5,
-                trendUp: true
-            },
-            goal: {
-                current: 23,
-                target: 30,
-                percentage: 70, // (23/30)*100
-                remaining: 7
-            },
-            pageViews: {
-                count: 156,
-                trend: 22,
-                trendUp: true
-            }
-        },
-
-        // Goals Data (from `seller_goals` table)
-        goals: {
-            monthly: {
-                month: 'Fevereiro 2026',
-                objective: 30,
-                achieved: 23,
-                percentage: 70,
-                remaining: 7,
-                status: 'in_progress' // 'completed', 'in_progress', 'failed'
-            },
-            funnel: {
-                approached: { current: 85, target: 100 },
-                negotiating: { current: 42, target: 50 },
-                closed: { current: 23, target: 30 }
-            },
-            breakdown: [
-                { label: 'Vendas Planos Ouro', current: 15, target: 20, percentage: 75, color: '#81bb3f' },
-                { label: 'Vendas Planos Pet', current: 5, target: 5, percentage: 100, color: '#2ecc71' },
-                { label: 'Vendas Planos Company', current: 3, target: 5, percentage: 60, color: '#f1c40f' }
-            ],
-            rewards: [
-                { id: 1, name: 'Vendedor Iniciante', description: 'Realizar a primeira venda.', unlocked: true, icon: 'fa-medal' },
-                { id: 2, name: 'Vendedor Premium', description: 'Atingir 20 vendas no mês.', unlocked: true, icon: 'fa-star' },
-                { id: 3, name: 'Top 1 do Mês', description: 'Ser o vendedor com mais vendas.', unlocked: false, icon: 'fa-crown' }
-            ]
-        },
-
-        // Calendar Events (from `seller_events` table)
-        calendar: {
-            currentMonth: 'Fevereiro 2026',
-            events: [
-                { id: 1, day: 2, title: 'Follow-up Cliente A', time: '10:00', type: 'call', color: 'red' },
-                { id: 2, day: 5, title: 'Reunião Equipe', time: '14:00', type: 'meeting', color: 'blue' },
-                { id: 3, day: 10, title: 'Reunião de Equipe', time: '14:00', location: 'Google Meet', color: 'green' },
-                { id: 4, day: 12, title: 'Apresentação Cliente', time: '09:30', location: 'Presencial', color: 'green' },
-                { id: 5, day: 15, title: 'Treinamento Vendas', time: '16:00', location: 'Online', color: 'blue' }
-            ],
-            upcomingEvents: [
-                { day: 10, month: 'FEV', title: 'Reunião de Equipe', time: '14:00', location: 'Google Meet' },
-                { day: 12, month: 'FEV', title: 'Apresentação Cliente', time: '09:30', location: 'Presencial' },
-                { day: 15, month: 'FEV', title: 'Treinamento Vendas', time: '16:00', location: 'Online' }
-            ]
-        }
-    };
-
-    // Store in localStorage for session persistence
-    localStorage.setItem('currentSeller', JSON.stringify(mockSeller));
-
-    return mockSeller;
+    return null;
 }
 
 /**
@@ -905,7 +914,16 @@ function updateMetricCard(id, value, trend, trendUp) {
     const valueEl = card.querySelector('.metric-value-lg');
     const trendEl = card.querySelector('.metric-trend');
 
-    if (valueEl) valueEl.textContent = value;
+    // Removed textContent update here to allow GSAP to animate it.
+    // Instead, we will store the value in a data attribute for GSAP to pick up
+    // Or, we update it and let GSAP handle it if it runs after.
+
+    // To fix conflict with GSAP number animation:
+    // GSAP animation reads text content. If we update it immediately, GSAP will animate 0 -> new value.
+    if (valueEl) {
+        valueEl.textContent = value;
+    }
+
     if (trendEl) {
         const icon = trendUp ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
         const sign = trendUp ? '+' : '';
@@ -1052,4 +1070,17 @@ function getCheckoutUrlWithSeller(planType, params, seller) {
 function logoutSeller() {
     localStorage.removeItem('currentSeller');
     window.location.href = 'index.html';
+}
+
+function checkAuth() {
+    const isLoginPage = window.location.pathname.includes('index.html') ||
+        window.location.pathname.endsWith('/vendedor/') ||
+        window.location.pathname.endsWith('vendedor');
+    const isVendaPage = window.location.pathname.includes('venda.html');
+
+    if (!isLoginPage && !isVendaPage && !getSellerData()) {
+        window.location.href = 'index.html';
+        return false;
+    }
+    return true;
 }
