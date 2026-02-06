@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula | MilleniumPREV Academy</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styleguide.css">
+    <link rel="stylesheet" href="../globals.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="lesson-page-body">
+
+    <!-- Header Simplificado -->
+    <header class="lesson-header">
+        <div class="lesson-header-left">
+            <a href="treinamentos.html" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Voltar</span>
+            </a>
+        </div>
+        <div class="lesson-header-center">
+            <img src="../img/logo.webp" alt="MilleniumPREV" class="lesson-logo"
+                onerror="this.src='https://placehold.co/140x40/1a4d45/ffffff?text=MilleniumPREV'">
+        </div>
+        <div class="lesson-header-right">
+            <span class="user-name" id="lessonUserName">João Gabriel</span>
+            <div class="user-avatar-small">
+                <i class="fa-regular fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="lesson-layout">
+        <!-- Conteúdo Principal -->
+        <main class="lesson-main">
+            <!-- Breadcrumb e Título -->
+            <div class="lesson-breadcrumb">
+                <span class="breadcrumb-category" id="lessonCategoryBreadcrumb">Vendas</span>
+            </div>
+            <div class="lesson-title-row">
+                <h1 id="lessonTitleMain">Aula Exemplo</h1>
+                <div class="lesson-nav-arrows">
+                    <button class="btn-arrow" id="prevLessonBtn" onclick="prevLesson()" title="Aula Anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button class="btn-arrow" id="nextLessonBtn" onclick="nextLesson()" title="Próxima Aula">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Player de Vídeo -->
+            <div class="lesson-video-wrapper">
+                <div class="lesson-video-player" id="lessonVideoPlayer">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=675&fit=crop"
+                        alt="Video Thumbnail" id="lessonVideoThumbnail">
+                    <div class="play-btn-overlay" onclick="playLessonVideo()">
+                        <div class="play-btn-circle">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info da Aula -->
+            <div class="lesson-info-section">
+                <div class="lesson-info-header">
+                    <h2>Informações</h2>
+                    <button class="btn-complete" id="btnComplete" onclick="markAsComplete()">
+                        <span>Concluída</span>
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+
+                <!-- Tabs -->
+                <div class="lesson-info-tabs">
+                    <button class="info-tab active" data-tab="description">Descrição</button>
+                    <button class="info-tab" data-tab="materials">Materiais</button>
+                    <button class="info-tab" data-tab="exercises">Exercícios</button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div class="lesson-tab-panels">
+                    <!-- Descrição -->
+                    <div class="tab-panel active" id="descriptionPanel">
+                        <p id="lessonDescriptionText">
+                            Aprenda as melhores estratégias para fechar vendas com confiança e aumentar sua taxa de
+                            conversão com essa aula estratética e didática.
+                        </p>
+                    </div>
+
+                    <!-- Materiais -->
+                    <div class="tab-panel" id="materialsPanel">
+                        <div class="materials-list" id="materialsList">
+                            <div class="material-item">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <span>Checklist de Fechamento.pdf</span>
+                                <button class="btn-download-material"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                            <div class="material-item">
+                                <i class="fa-solid fa-file-word"></i>
+                                <span>Scripts de Vendas.docx</span>
+                                <button class="btn-download-material"><i class="fa-solid fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exercícios -->
+                    <div class="tab-panel" id="exercisesPanel">
+                        <div class="exercise-start" id="exerciseStartScreen">
+                            <i class="fa-solid fa-brain"></i>
+                            <h3>Teste seus conhecimentos</h3>
+                            <p>Este teste contém 10 perguntas. Você precisa de pelo menos 6 acertos para aprovação e
+                                liberar o próximo módulo.</p>
+                            <button class="btn-start-exercise" onclick="startExercise()">
+                                Iniciar Exercício <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Quiz Container (Initially Hidden) -->
+                        <div class="quiz-container" id="quizContainer" style="display: none;">
+                            <div class="quiz-header-row">
+                                <span class="quiz-progress-text">Pergunta <span id="currentQuestionNum">1</span> de
+                                    10</span>
+                                <div class="quiz-progress-bar">
+                                    <div class="quiz-progress-fill" id="quizProgressFill" style="width: 10%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-question-card">
+                                <h3 id="questionText">Carregando pergunta...</h3>
+                                <div class="quiz-options" id="quizOptions">
+                                    <!-- Options will be injected here -->
+                                </div>
+                            </div>
+
+                            <div class="quiz-footer">
+                                <button class="btn-quiz-action" id="btnQuizAction" onclick="checkAnswer()">Confirmar
+                                    Resposta</button>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Result (Initially Hidden) -->
+                        <div class="quiz-result" id="quizResult" style="display: none;">
+                            <div class="result-icon success" id="resultIcon">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <h3 id="resultTitle">Parabéns!</h3>
+                            <p id="resultMessage">Você acertou 8 de 10 perguntas.</p>
+                            <button class="btn-start-exercise" onclick="finishQuizAction()" id="btnResultAction">
+                                Continuar para próximo módulo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Sidebar de Aulas -->
+        <aside class="lesson-sidebar" id="lessonSidebar">
+            <button class="sidebar-toggle-mobile" onclick="toggleLessonSidebar()">
+                <i class="fa-solid fa-list"></i>
+            </button>
+
+            <!-- Container com scroll -->
+            <div class="lesson-sidebar-content">
+                <!-- Categoria: Vendas -->
+                <div class="sidebar-category expanded" data-category="vendas">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <h3>Vendas</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="category-lessons">
+                        <div class="sidebar-lesson active" data-lesson="1" onclick="navigateToLesson('vendas', 1)">
+                            <div class="lesson-thumb">
+                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=200&h=120&fit=crop"
+                                    alt="Aula 1">
+                                <div class="thumb-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-name">Aula Exemplo</span>
+                                <span class="lesson-status completed"><i class="fa-solid fa-check"></i></span>
+                            </div>
+                        </div>
+                        <div class="sidebar-lesson" data-lesson="2" onclick="navigateToLesson('vendas', 2)">
+                            <div class="lesson-thumb">
+                                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=200&h=120&fit=crop"
+                                    alt="Aula 2">
+                                <div class="thumb-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-name">Aula Exemplo 2</span>
+                                <span class="lesson-status"><i class="fa-regular fa-circle"></i></span>
+                            </div>
+                        </div>
+                        <div class="sidebar-lesson" data-lesson="3" onclick="navigateToLesson('vendas', 3)">
+                            <div class="lesson-thumb">
+                                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=200&h=120&fit=crop"
+                                    alt="Aula 3">
+                                <div class="thumb-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-name">Aula Exemplo 3</span>
+                                <span class="lesson-status"><i class="fa-regular fa-circle"></i></span>
+                            </div>
+                        </div>
+                        <div class="sidebar-lesson" data-lesson="4" onclick="navigateToLesson('vendas', 4)">
+                            <div class="lesson-thumb">
+                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=200&h=120&fit=crop"
+                                    alt="Aula 4">
+                                <div class="thumb-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-name">Aula Exemplo 4</span>
+                                <span class="lesson-status"><i class="fa-regular fa-circle"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categoria: Atendimento -->
+                <div class="sidebar-category" data-category="atendimento">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <h3>Atendimento</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="category-lessons">
+                        <div class="sidebar-lesson" data-lesson="1" onclick="navigateToLesson('atendimento', 1)">
+                            <div class="lesson-thumb">
+                                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=200&h=120&fit=crop"
+                                    alt="Aula 1">
+                                <div class="thumb-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-name">Atendimento Premium</span>
+                                <span class="lesson-status"><i class="fa-regular fa-circle"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categoria: MilleniumPREV -->
+                <div class="sidebar-category" data-category="millenium">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <h3>MilleniumPREV</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="category-lessons">
+                        <div class="sidebar-lesson" data-lesson="1" onclick="navigateToLesson('millenium', 1)">
+                            <div class="lesson-thumb">
+                                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=200&h=120&fit=crop"
+                                    alt="Aula 1">
+                                <div class="thumb-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="lesson-meta">
+                                <span class="lesson-name">Conhecendo os Planos</span>
+                                <span class="lesson-status"><i class="fa-regular fa-circle"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Overlay para sidebar mobile -->
+    <div class="lesson-sidebar-overlay" id="lessonSidebarOverlay" onclick="closeLessonSidebar()"></div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        // =========================================
+        // PÁGINA DE AULA - LÓGICA JAVASCRIPT
+        // =========================================
+
+        // Dados da aula atual (virá da URL ou API)
+        let currentLesson = {
+            category: 'vendas',
+            lessonId: 1,
+            title: 'Aula Exemplo',
+            description: 'Aprenda as melhores estratégias para fechar vendas com confiança e aumentar sua taxa de conversão com essa aula estratética e didática.',
+            videoUrl: null,
+            completed: false
+        };
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ler parâmetros da URL
+            const params = new URLSearchParams(window.location.search);
+            const curso = params.get('curso') || 'vendas';
+            const aula = parseInt(params.get('aula')) || 1;
+
+            currentLesson.category = curso;
+            currentLesson.lessonId = aula;
+
+            // Atualizar UI
+            updateLessonUI();
+
+            // Inicializar tabs
+            initTabs();
+
+            // Animação de entrada
+            initPageAnimation();
+        });
+
+        // Atualizar UI com dados da aula
+        function updateLessonUI() {
+            // Marcar aula ativa na sidebar
+            document.querySelectorAll('.sidebar-lesson').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            const activeLesson = document.querySelector(
+                `.sidebar-category[data-category="${currentLesson.category}"] .sidebar-lesson[data-lesson="${currentLesson.lessonId}"]`
+            );
+            if (activeLesson) {
+                activeLesson.classList.add('active');
+                // Expandir categoria
+                const category = activeLesson.closest('.sidebar-category');
+                if (category) category.classList.add('expanded');
+            }
+
+            // Atualizar breadcrumb
+            const categoryNames = {
+                'vendas': 'Vendas',
+                'atendimento': 'Atendimento',
+                'millenium': 'MilleniumPREV',
+                'planos': 'Conhecimento de Planos',
+                'followup': 'Follow-up'
+            };
+            document.getElementById('lessonCategoryBreadcrumb').textContent =
+                categoryNames[currentLesson.category] || currentLesson.category;
+        }
+
+        // Inicializar tabs
+        function initTabs() {
+            document.querySelectorAll('.info-tab').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // Remove active de todas as tabs
+                    document.querySelectorAll('.info-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+                    // Ativa tab clicada
+                    this.classList.add('active');
+                    const panelId = this.dataset.tab + 'Panel';
+                    document.getElementById(panelId).classList.add('active');
+                });
+            });
+        }
+
+        // Animação de entrada
+        function initPageAnimation() {
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo('.lesson-main',
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+                );
+                gsap.fromTo('.lesson-sidebar',
+                    { opacity: 0, x: 30 },
+                    { opacity: 1, x: 0, duration: 0.5, delay: 0.2, ease: 'power2.out' }
+                );
+            }
+        }
+
+        // Toggle categoria na sidebar
+        function toggleCategory(header) {
+            const category = header.closest('.sidebar-category');
+            category.classList.toggle('expanded');
+        }
+
+        // Navegação entre aulas
+        function navigateToLesson(category, lessonId) {
+            window.location.href = `aula.html?curso=${category}&aula=${lessonId}`;
+        }
+
+        function prevLesson() {
+            if (currentLesson.lessonId > 1) {
+                navigateToLesson(currentLesson.category, currentLesson.lessonId - 1);
+            }
+        }
+
+        function nextLesson() {
+            navigateToLesson(currentLesson.category, currentLesson.lessonId + 1);
+        }
+
+        // Play video
+        function playLessonVideo() {
+            alert('Player de vídeo seria inicializado aqui (integração com Vimeo/YouTube)');
+        }
+
+        // Marcar como concluída
+        function markAsComplete() {
+            const btn = document.getElementById('btnComplete');
+            btn.classList.toggle('completed');
+
+            if (btn.classList.contains('completed')) {
+                // Atualizar na sidebar também
+                const activeLesson = document.querySelector('.sidebar-lesson.active .lesson-status');
+                if (activeLesson) {
+                    activeLesson.classList.add('completed');
+                    activeLesson.innerHTML = '<i class="fa-solid fa-check"></i>';
+                }
+                // TODO: Salvar progresso via API
+                console.log('Aula marcada como concluída');
+            }
+        }
+
+        // =========================================
+        // QUIZ LOGIC
+        // =========================================
+        const quizQuestions = [
+            {
+                question: "Qual é o primeiro passo fundamental em uma venda consultiva?",
+                options: ["Falar o preço imediatamente", "Entender a necessidade do cliente", "Mostrar todos os produtos do catálogo", "Pedir indicação de outros clientes"],
+                correct: 1
+            },
+            {
+                question: "O que é 'Rapport' em vendas?",
+                options: ["Um desconto especial", "Uma técnica de fechamento agressiva", "Criar uma conexão e sintonia com o cliente", "O relatório final de vendas"],
+                correct: 2
+            },
+            {
+                question: "Como lidar com a objeção 'está caro'?",
+                options: ["Concordar e dar um desconto logo de cara", "Ignorar e continuar falando", "Demonstrar o valor e benefícios do produto antes de discutir preço", "Dizer que o cliente está errado"],
+                correct: 2
+            },
+            {
+                question: "Qual destas NÃO é uma etapa do funil de vendas?",
+                options: ["Prospecção", "Negociação", "Fabricação", "Fechamento"],
+                correct: 2
+            },
+            {
+                question: "O que significa a sigla CRM?",
+                options: ["Customer Relationship Management", "Central de Reclamações Mensais", "Controle Rápido de Mercadorias", "Curso Real de Marketing"],
+                correct: 0
+            },
+            {
+                question: "Qual a melhor forma de fazer follow-up?",
+                options: ["Ligar 10 vezes no mesmo dia", "Mandar apenas um email e desistir", "Definir um próximo passo claro e manter contato consistente sem ser chato", "Esperar o cliente entrar em contato"],
+                correct: 2
+            },
+            {
+                question: "Em uma venda B2B, quem é o 'decisor'?",
+                options: ["A pessoa que atende o telefone", "Quem tem o poder final de aprovar a compra", "O estagiário", "O concorrente"],
+                correct: 1
+            },
+            {
+                question: "Qual a importância de ouvir mais do que falar?",
+                options: ["Para economizar voz", "Não tem importância, o vendedor deve falar o tempo todo", "Para identificar as dores reais do cliente e oferecer a solução certa", "Para fazer o cliente esquecer do preço"],
+                correct: 2
+            },
+            {
+                question: "O que é 'upsell'?",
+                options: ["Vender um produto superior ou mais caro ao que o cliente ia levar", "Vender um produto complementar", "Cancelar a venda", "Dar um brinde"],
+                correct: 0
+            },
+            {
+                question: "Qual é o objetivo final de todo processo de vendas?",
+                options: ["Apenas vender uma vez", "Resolver o problema do cliente e fidelizá-lo", "Vencer uma discussão", "Bater a meta a qualquer custo ético"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizState = 'waiting'; // waiting, answered
+
+        function startExercise() {
+            document.getElementById('exerciseStartScreen').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('quizResult').style.display = 'none';
+
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            quizState = 'waiting';
+            const q = quizQuestions[currentQuestionIndex];
+
+            // UI Update
+            document.getElementById('currentQuestionNum').innerText = currentQuestionIndex + 1;
+            document.getElementById('quizProgressFill').style.width = `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`;
+            document.getElementById('questionText').innerText = q.question;
+
+            const optionsInfoInfo = document.getElementById('quizOptions');
+            optionsInfoInfo.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(index);
+                optionsInfoInfo.appendChild(btn);
+            });
+
+            const btnAction = document.getElementById('btnQuizAction');
+            btnAction.innerText = 'Confirmar Resposta';
+            btnAction.disabled = true;
+            btnAction.onclick = checkAnswer;
+        }
+
+        function selectOption(index) {
+            if (quizState === 'answered') return;
+
+            // Remove selected from all
+            document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+
+            // Add to current
+            const options = document.querySelectorAll('.quiz-option');
+            options[index].classList.add('selected');
+
+            document.getElementById('btnQuizAction').disabled = false;
+        }
+
+        function checkAnswer() {
+            if (quizState === 'answered') {
+                return nextQuestion();
+            }
+
+            const selectedOption = document.querySelector('.quiz-option.selected');
+            if (!selectedOption) return;
+
+            quizState = 'answered';
+            const selectedText = selectedOption.innerText;
+            const q = quizQuestions[currentQuestionIndex];
+            const correctText = q.options[q.correct];
+
+            // Check correctness
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((opt, idx) => {
+                opt.classList.remove('selected'); // remove selection style for cleaner result state
+                if (opt.innerText === correctText) {
+                    opt.classList.add('correct');
+                }
+                if (opt.innerText === selectedText && idx !== q.correct) {
+                    opt.classList.add('wrong');
+                }
+            });
+
+            if (selectedText === correctText) {
+                score++;
+            }
+
+            // Change button to "Next"
+            const btnAction = document.getElementById('btnQuizAction');
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                btnAction.innerText = 'Próxima Pergunta';
+            } else {
+                btnAction.innerText = 'Ver Resultado';
+            }
+            btnAction.onclick = nextQuestion;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('quizResult').style.display = 'flex';
+
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const msg = document.getElementById('resultMessage');
+            const btn = document.getElementById('btnResultAction');
+
+            // 60% approval (6 out of 10)
+            const passed = score >= 6;
+
+            if (passed) {
+                icon.className = 'result-icon success';
+                icon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+                title.innerText = 'Parabéns!';
+                msg.innerText = `Você acertou ${score} de 10 perguntas. Você foi aprovado neste módulo!`;
+                btn.innerText = 'Liberar Próximo Módulo';
+                btn.onclick = unlockNextModuleAction;
+            } else {
+                icon.className = 'result-icon failure';
+                icon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                title.innerText = 'Não foi dessa vez';
+                msg.innerText = `Você acertou ${score} de 10 perguntas. Você precisa de pelo menos 6 para avançar. Revise o conteúdo e tente novamente.`;
+                btn.innerText = 'Tentar Novamente';
+                btn.onclick = startExercise;
+            }
+        }
+
+        function unlockNextModuleAction() {
+            // Find sidebar category for next module (mock logic)
+            // Here assuming "Vendas" is complete and we might unlock something else or just show visual feedback
+            alert("Módulo 'Vendas' concluído! Próximo módulo desbloqueado.");
+
+            // Mark current lesson as complete if not already
+            const btnComplete = document.getElementById('btnComplete');
+            if (!btnComplete.classList.contains('completed')) {
+                markAsComplete();
+            }
+
+            // Reset to start screen or redir
+            document.getElementById('quizResult').style.display = 'none';
+            document.getElementById('exerciseStartScreen').style.display = 'block';
+        }
+
+        // Toggle sidebar mobile
+        function toggleLessonSidebar() {
+            const sidebar = document.getElementById('lessonSidebar');
+            const overlay = document.getElementById('lessonSidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function closeLessonSidebar() {
+            const sidebar = document.getElementById('lessonSidebar');
+            const overlay = document.getElementById('lessonSidebarOverlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    </script>
+</body>
+
+</html>

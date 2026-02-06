@@ -117,12 +117,12 @@
         <header class="header">
             <div class="header-title">
                 <h1>Academy MilleniumPREV</h1>
-                <p>Desenvolva suas habilidades e alcance novos resultados.</p>
+                <p>Desenvolva suas habilidades e alcance melhores resultados.</p>
             </div>
             <div class="header-actions">
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Buscar treinamentos..." id="searchTraining">
+                    <input type="text" placeholder="Pesquisar conteúdo..." id="searchTraining">
                 </div>
             </div>
         </header>
@@ -135,21 +135,20 @@
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div class="progress-text">
-                        <h3>Seu Progresso</h3>
-                        <p>Continue aprendendo para melhorar suas vendas!</p>
+                        <h3>Disponível na plataforma:</h3>
                     </div>
                 </div>
                 <div class="progress-stats">
                     <div class="stat">
-                        <span class="stat-value" id="completedCourses">3</span>
+                        <span class="stat-value" id="completedCourses">2</span>
                         <span class="stat-label">Cursos Completos</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-value" id="totalHours">8h</span>
+                        <span class="stat-value" id="totalHours">1h20</span>
                         <span class="stat-label">Horas de Estudo</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-value" id="exercisesCompleted">12</span>
+                        <span class="stat-value" id="exercisesCompleted">+30</span>
                         <span class="stat-label">Exercícios</span>
                     </div>
                     <div class="stat">
@@ -191,7 +190,7 @@
 
         <!-- Categories -->
         <section class="categories-section">
-            <h2 class="section-title">Categorias de Treinamento</h2>
+            <h2 class="section-title">Navegue por tópicos</h2>
             <div class="categories-grid">
                 <div class="category-card" data-category="vendas" onclick="filterByCategory('vendas')">
                     <div class="category-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -574,19 +573,34 @@
             });
         });
 
-        // Open Course
+        // Open Course - Redireciona para página de aula
         function openCourse(courseId) {
-            openLesson(courseId, 1);
+            // Mapear courseId para categoria
+            const categoryMap = {
+                'vendas-master': 'vendas',
+                'planos-guide': 'planos',
+                'atendimento-excellence': 'atendimento',
+                'followup-strategic': 'followup'
+            };
+            const category = categoryMap[courseId] || 'vendas';
+            window.location.href = `aula.html?curso=${category}&aula=1`;
         }
 
-        // Open Lesson Modal
+        // Open Lesson - Redireciona para página de aula
         function openLesson(courseId, lessonNumber) {
-            const modal = document.getElementById('lessonModal');
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Load exercise for this lesson
-            loadExercise('vendas-3');
+            // Mapear courseId para categoria se necessário
+            const categoryMap = {
+                'vendas-master': 'vendas',
+                'vendas': 'vendas',
+                'planos-guide': 'planos',
+                'planos': 'planos',
+                'atendimento-excellence': 'atendimento',
+                'atendimento': 'atendimento',
+                'followup-strategic': 'followup',
+                'followup': 'followup'
+            };
+            const category = categoryMap[courseId] || courseId;
+            window.location.href = `aula.html?curso=${category}&aula=${lessonNumber}`;
         }
 
         // Close Lesson Modal
