@@ -94,7 +94,20 @@ Página pública que o vendedor compartilha com clientes. Contém:
 - Exercícios realizados
 - Certificados emitidos
 
-### 6. `material.html` - Materiais de Marketing
+### 6. `aula.html` - Página de Aula (Player & Quiz)
+**Funcionalidades:**
+- **Layout Focado:** Header fixo simplificado, sidebar fixa com lista de aulas e área de conteúdo com scroll nativo.
+- **Player:** Área de destaque para vídeo (iframe ou HTML5 video).
+- **Tabs de Conteúdo:**
+    - **Descrição:** Texto de apoio sobre a aula.
+    - **Materiais:** Lista de arquivos para download (PDF, DOCX).
+    - **Exercícios:** Quiz interativo de avaliação.
+- **Sistema de Quiz:**
+    - 10 perguntas sequenciais com feedback imediato.
+    - Pontuação mínima (60%) para aprovação.
+    - Bloqueio/Desbloqueio de progresso (visual).
+    
+### 7. `material.html` - Materiais de Marketing
 - Cards promocionais
 - Artes para redes sociais
 - Apresentações PDF
