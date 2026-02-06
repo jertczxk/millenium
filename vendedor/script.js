@@ -1,66 +1,96 @@
-// GSAP Animations and Dashboard Logic
+/* =========================================
+   PAINEL DO VENDEDOR - MILLENIUM PREV
+   =========================================
+   Este arquivo contém toda a lógica do painel do vendedor.
+   
+   PARA O DESENVOLVEDOR BACKEND:
+   - Os dados abaixo (MOCK_SELLER_DB) simulam o que virá do MySQL
+   - Substitua as funções de localStorage por chamadas à API
+   - Mantenha a estrutura de dados para compatibilidade
+   ========================================= */
 
-// =================================
-// MOCK DATA - Replace with MySQL API
-// =================================
+/* =========================================
+   1. DADOS MOCK - SUBSTITUIR POR API MYSQL
+   =========================================
+   Esta constante simula todos os dados que virão do banco de dados.
+   Estrutura pronta para serialização JSON da API.
+   ========================================= */
 const MOCK_SELLER_DB = {
-    // Basic Info (from `sellers` table)
-    id: 40,
-    slug: 'vendedor40',
-    name: 'João Gabriel Jertczuk',
-    firstName: 'João',
-    email: 'joao@example.com',
-    phone: '(41) 99999-9999',
-    avatar: null, // URL or null for default
-    isPremium: true,
-    commissionRate: 0.15, // 15%
-    createdAt: '2024-01-15',
+    // ================================
+    // DADOS BÁSICOS DO VENDEDOR
+    // Tabela MySQL: sellers
+    // ================================
+    id: 40,                         // ID único do vendedor
+    slug: 'vendedor40',             // Slug único para URL da página de vendas
+    name: 'Vendedor Teste',         // Nome completo
+    firstName: 'Vendedor',          // Primeiro nome (para saudação)
+    email: 'vendedor@example.com',  // Email de contato
+    phone: '(41) 99999-9999',       // Telefone
+    avatar: null,                   // URL do avatar ou null para padrão
+    isPremium: true,                // Se é vendedor premium (badge especial)
+    commissionRate: 0.15,           // Taxa de comissão (15% = 0.15)
+    createdAt: '2024-01-15',        // Data de cadastro
 
-    // Dashboard Metrics (from `seller_metrics` table)
+    // ================================
+    // MÉTRICAS DO DASHBOARD
+    // Tabela MySQL: seller_metrics
+    // Dados atualizados mensalmente
+    // ================================
     metrics: {
+        // Comissão do mês atual
         commission: {
-            value: 850.00,
-            trend: 14, // percentage change
-            trendUp: true
+            value: 650.00,          // Valor em R$
+            trend: 12,              // Variação percentual em relação ao mês anterior
+            trendUp: true           // true = aumento, false = queda
         },
+        // Vendas realizadas no mês
         sales: {
-            contracts: 23,
-            trend: 5,
+            contracts: 18,          // Quantidade de contratos fechados
+            trend: 5,               // Variação em relação ao mês anterior
             trendUp: true
         },
+        // Meta mensal
         goal: {
-            current: 23,
-            target: 30,
-            percentage: 70, // (23/30)*100
-            remaining: 7
+            current: 18,            // Vendas realizadas
+            target: 30,             // Meta definida
+            percentage: 60,         // Percentual atingido (current/target * 100)
+            remaining: 12           // Vendas restantes para bater meta
         },
+        // Acessos à página de vendas do vendedor
         pageViews: {
-            count: 156,
-            trend: 22,
+            count: 156,             // Total de visualizações
+            trend: 22,              // Variação percentual
             trendUp: true
         }
     },
 
-    // Goals Data (from `seller_goals` table)
+    // ================================
+    // DADOS DE METAS E FUNIL
+    // Tabela MySQL: seller_goals
+    // ================================
     goals: {
+        // Meta mensal detalhada
         monthly: {
-            month: 'Fevereiro 2026',
-            objective: 30,
-            achieved: 23,
-            percentage: 70,
-            remaining: 7,
-            status: 'in_progress' // 'completed', 'in_progress', 'failed'
+            month: 'Fevereiro 2026', // Mês de referência
+            objective: 30,           // Objetivo de vendas
+            achieved: 18,            // Vendas realizadas
+            percentage: 60,          // Percentual atingido
+            remaining: 12,           // Restantes
+            status: 'in_progress'    // Status: 'completed', 'in_progress', 'failed'
         },
+        // Funil de vendas (etapas do processo comercial)
         funnel: {
-            approached: { current: 85, target: 100 },
-            negotiating: { current: 42, target: 50 },
-            closed: { current: 23, target: 30 }
+            approached: { current: 85, target: 100 },    // Clientes abordados
+            negotiating: { current: 42, target: 50 },    // Em negociação
+            closed: { current: 23, target: 30 }          // Vendas fechadas
         },
+        // Detalhamento por tipo de plano
         breakdown: [
             { label: 'Vendas Planos Ouro', current: 15, target: 20, percentage: 75, color: '#81bb3f' },
             { label: 'Vendas Planos Pet', current: 5, target: 5, percentage: 100, color: '#2ecc71' },
             { label: 'Vendas Planos Company', current: 3, target: 5, percentage: 60, color: '#f1c40f' }
         ],
+        // Conquistas/Recompensas (gamificação)
         rewards: [
             { id: 1, name: 'Vendedor Iniciante', description: 'Realizar a primeira venda.', unlocked: true, icon: 'fa-medal' },
             { id: 2, name: 'Vendedor Premium', description: 'Atingir 20 vendas no mês.', unlocked: true, icon: 'fa-star' },
@@ -68,9 +98,13 @@ const MOCK_SELLER_DB = {
         ]
     },
 
-    // Calendar Events (from `seller_events` table)
+    // ================================
+    // EVENTOS DO CALENDÁRIO
+    // Tabela MySQL: seller_events
+    // ================================
     calendar: {
-        currentMonth: 'Fevereiro 2026',
+        currentMonth: 'Fevereiro 2026',  // Mês atual exibido
+        // Lista de eventos com cores: red (urgente), blue (reunião), green (treinamento)
         events: [
             { id: 1, day: 2, title: 'Follow-up Cliente A', time: '10:00', type: 'call', color: 'red' },
             { id: 2, day: 5, title: 'Reunião Equipe', time: '14:00', type: 'meeting', color: 'blue' },
@@ -86,38 +120,50 @@ const MOCK_SELLER_DB = {
     }
 };
 
+/* =========================================
+   2. INICIALIZAÇÃO DO PAINEL
+   =========================================
+   Executa ao carregar a página.
+   Verifica autenticação e carrega dados do vendedor.
+   ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
 
-    // =================================
-    // SELLER IDENTIFICATION SYSTEM
-    // (Prepared for MySQL integration)
-    // =================================
+    // ================================
+    // SISTEMA DE IDENTIFICAÇÃO DO VENDEDOR
+    // TODO: Integrar com API MySQL
+    // ================================
 
-    // Check authentication for protected pages
+    // Verifica se o vendedor está autenticado (sessão válida)
+    // Se não estiver, redireciona para página de login
     if (!checkAuth()) return;
 
-    // Get seller data from mock/localStorage
+    // Obtém dados do vendedor do localStorage (mock)
+    // TODO: Substituir por GET /api/seller/:id
     const currentSeller = getSellerData();
 
-    // Initialize seller-specific elements
+    // Inicializa o dashboard com os dados do vendedor
     if (currentSeller && typeof initSellerDashboard === 'function') {
         initSellerDashboard(currentSeller);
     }
 
-    // Initialize Animations
+    // Inicializa animações GSAP
     initSmoothScroll();
     initAnimations();
     if (typeof initMarquee === 'function') initMarquee();
     if (typeof initPlansStacking === 'function') initPlansStacking();
     if (typeof initFooterMarquee === 'function') initFooterMarquee();
 
-    // CPF Masking
+    // ================================
+    // MÁSCARA DE CPF NO INPUT
+    // Formata automaticamente: 000.000.000-00
+    // ================================
     const cpfInput = document.getElementById('cpf');
     if (cpfInput) {
         cpfInput.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, "");
-            if (value.length > 11) value = value.slice(0, 11);
+            let value = e.target.value.replace(/\D/g, "");  // Remove não-dígitos
+            if (value.length > 11) value = value.slice(0, 11);  // Limita a 11 dígitos
 
+            // Aplica máscara progressivamente
             if (value.length > 9) {
                 value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, "$1.$2.$3-$4");
             } else if (value.length > 6) {
@@ -140,16 +186,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+/* =========================================
+   3. SISTEMA DE ANIMAÇÕES GSAP
+   =========================================
+   Animações de entrada e interação.
+   Detecta o tipo de página e aplica animações específicas.
+   ========================================= */
 function initAnimations() {
-    // Check if GSAP is loaded
+    // Verifica se a biblioteca GSAP está carregada
     if (typeof gsap !== 'undefined') {
 
-        // Detectar tipo de página
+        // Detecta se é página de vendas (pública) ou dashboard (painel)
         const isSalesPage = document.querySelector('.sales-header') !== null;
 
-        // =================================
-        // PÁGINA DE VENDAS - Animações Completas
-        // =================================
+        // ================================
+        // ANIMAÇÕES DA PÁGINA DE VENDAS
+        // Animações completas e chamativas para impressionar o cliente
+        // ================================
         if (isSalesPage) {
             const tl = gsap.timeline();
 
@@ -207,11 +260,12 @@ function initAnimations() {
                 }, "-=0.2");
         }
 
-        // =================================
-        // DASHBOARD - Animações Sutis e Rápidas
-        // =================================
+        // ================================
+        // ANIMAÇÕES DO DASHBOARD
+        // Sutis e rápidas para não atrapalhar a navegação
+        // ================================
         if (!isSalesPage) {
-            // Animação única e rápida do conteúdo principal
+            // Fade-in suave do conteúdo principal
             gsap.fromTo('.main-content',
                 { opacity: 0, y: 10 },
                 { opacity: 1, y: 0, duration: 0.4, ease: 'power3.in' }
@@ -270,27 +324,43 @@ function initAnimations() {
     }
 }
 
+/* =========================================
+   4. SISTEMA DE LOGIN
+   =========================================
+   Processa o formulário de login por CPF.
+   
+   TODO BACKEND:
+   - POST /api/auth/login { cpf }
+   - Retornar { seller: {...}, token: "JWT" }
+   - Armazenar token para requisições autenticadas
+   ========================================= */
 function handleLogin(event) {
     event.preventDefault();
     const cpf = document.getElementById('cpf').value;
-    const cleanCpf = cpf.replace(/\D/g, "");
+    const cleanCpf = cpf.replace(/\D/g, "");  // Remove formatação
 
+    // Valida se o CPF tem 11 dígitos
     if (cleanCpf.length === 11) {
 
+        // Feedback visual de carregamento
         const btn = event.target.querySelector('button');
         btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> ACESSANDO...`;
         btn.disabled = true;
         btn.style.opacity = '0.8';
 
-        // For local testing: Simulate successful login for any valid CPF
-        // In production: Validate against API
+        // ================================
+        // TODO: SUBSTITUIR POR CHAMADA À API
+        // fetch('/api/auth/login', { method: 'POST', body: JSON.stringify({ cpf: cleanCpf }) })
+        // ================================
 
-        // Create a session for the mock seller
-        const sessionSeller = { ...MOCK_SELLER_DB }; // Clone mock data
-        sessionSeller.cpf = cleanCpf; // Assign input CPF to allow "any user"
+        // MOCK: Simula login bem-sucedido com dados fictícios
+        const sessionSeller = { ...MOCK_SELLER_DB };
+        sessionSeller.cpf = cleanCpf;
 
+        // Salva sessão no localStorage (substituir por JWT em produção)
         localStorage.setItem('currentSeller', JSON.stringify(sessionSeller));
 
+        // Redireciona para o dashboard
         setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 800);
@@ -299,12 +369,20 @@ function handleLogin(event) {
     }
 }
 
+/* =========================================
+   5. MENU LATERAL (SIDEBAR)
+   =========================================
+   Funções para expandir/recolher o menu lateral.
+   ========================================= */
+
+// Alterna menu lateral em desktop (expandido/recolhido)
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('main-content');
 
     sidebar.classList.toggle('collapsed');
 
+    // Ajusta padding do conteúdo principal
     if (sidebar.classList.contains('collapsed')) {
         mainContent.classList.add('sidebar-collapsed-padding');
     } else {
@@ -312,7 +390,7 @@ function toggleMenu() {
     }
 }
 
-// Mobile Menu Toggle Functions with GSAP Animation
+// Abre/fecha menu em dispositivos móveis com animação GSAP
 function toggleMobileMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -364,6 +442,7 @@ function toggleMobileMenu() {
     }
 }
 
+// Fecha menu mobile com animação de slide-out
 function closeMobileMenu() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -410,7 +489,11 @@ function closeMobileMenu() {
 
 
 
-// Share on WhatsApp (General)
+/* =========================================
+   6. COMPARTILHAMENTO WHATSAPP
+   ========================================= */
+
+// Compartilha link genérico no WhatsApp
 function shareWhatsapp() {
     const text = encodeURIComponent("Olá! Confira os planos da MilleniumPREV e garanta sua proteção hoje mesmo: " + window.location.origin + '/index.html?ref=joaogabriel');
     window.open(`https://wa.me/?text=${text}`, '_blank');
@@ -526,13 +609,19 @@ function initPlansStacking() {
     });
 }
 
-// =================================
-// CHECKOUT POPUP LOGIC
-// =================================
+/* =========================================
+   7. SISTEMA DE CHECKOUT E POPUP DE PLANOS
+   =========================================
+   Gerencia a seleção de planos e redirecionamento para checkout.
+   O parâmetro ?vendedor= é CRUCIAL para tracking de comissões!
+   ========================================= */
 
 /**
- * Get seller ID from URL parameter (for sales pages)
- * URL format: venda.html?vendedor=vendedor40
+ * Obtém o slug do vendedor a partir da URL
+ * URL esperada: venda.html?vendedor=vendedor40
+ * 
+ * IMPORTANTE: Este parâmetro é usado para rastrear
+ * qual vendedor gerou a venda e calcular comissões.
  */
 function getSellerFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -540,9 +629,11 @@ function getSellerFromUrl() {
 }
 
 /**
- * Append seller ID to checkout URL for commission tracking
- * @param {string} url - Base checkout URL
- * @returns {string} URL with vendedor parameter
+ * Adiciona o ID do vendedor na URL de checkout
+ * Isso permite que o backend identifique quem fez a venda.
+ * 
+ * @param {string} url - URL base do checkout (Tenex)
+ * @returns {string} URL com parâmetro vendedor
  */
 function appendSellerToUrl(url) {
     const sellerId = getSellerFromUrl();
@@ -552,7 +643,8 @@ function appendSellerToUrl(url) {
     return `${url}${separator}vendedor=${sellerId}`;
 }
 
-// Checkout URL Data
+// URLs de checkout por plano e faixa etária/peso/funcionários
+// Apontam para o sistema Tenex
 const checkoutLinks = {
     prata: {
         name: "Plano Prata",
@@ -786,26 +878,37 @@ function initSmoothScroll() {
     }
 }
 
-// =================================
-// SELLER IDENTIFICATION SYSTEM
-// =================================
+/* =========================================
+   8. SISTEMA DE IDENTIFICAÇÃO DO VENDEDOR
+   =========================================
+   Funções para gerenciar sessão e dados do vendedor logado.
+   
+   TODO BACKEND:
+   - Substituir localStorage por JWT
+   - Validar token em cada requisição
+   - Buscar dados atualizados via API
+   ========================================= */
 
 /**
- * Get seller data from localStorage or session
- * In production, this will fetch from MySQL via API
- * @returns {Object|null} Seller data object
+ * Obtém dados do vendedor logado
+ * Atualmente usa localStorage, deve ser substituído por API
+ * 
+ * TODO: GET /api/seller/me (com token JWT)
+ * 
+ * @returns {Object|null} Dados do vendedor ou null se não logado
  */
 function getSellerData() {
-    // Check if we're on a dashboard page
+    // Verifica se estamos em uma página protegida do painel
     const isDashboardPage = window.location.pathname.includes('dashboard') ||
         window.location.pathname.includes('material') ||
         window.location.pathname.includes('metas') ||
         window.location.pathname.includes('calendario') ||
         window.location.pathname.includes('treinamentos');
 
+    // Se não for página do painel, retorna null
     if (!isDashboardPage) return null;
 
-    // Try to get seller from localStorage (simulating session)
+    // Tenta obter vendedor do localStorage (mock de sessão)
     let seller = localStorage.getItem('currentSeller');
 
     if (seller) {
@@ -816,30 +919,33 @@ function getSellerData() {
 }
 
 /**
- * Initialize seller-specific dashboard elements
- * @param {Object} seller - Seller data object
+ * Inicializa o dashboard com os dados do vendedor
+ * Preenche todos os elementos dinâmicos da página
+ * 
+ * @param {Object} seller - Objeto com dados do vendedor
  */
 function initSellerDashboard(seller) {
-    // Store seller in window for global access
+    // Armazena vendedor globalmente para acesso em outras funções
     window.currentSeller = seller;
 
-    // Update common elements (sidebar, user profile)
+    // Atualiza elementos comuns (sidebar, header, perfil)
     updateCommonElements(seller);
 
-    // Detect current page and populate accordingly
+    // Detecta página atual e preenche dados específicos
     const currentPage = window.location.pathname;
 
     if (currentPage.includes('dashboard')) {
-        populateDashboardPage(seller);
+        populateDashboardPage(seller);  // Métricas principais
     } else if (currentPage.includes('metas')) {
-        populateGoalsPage(seller);
+        populateGoalsPage(seller);      // Metas e funil
     } else if (currentPage.includes('calendario')) {
-        populateCalendarPage(seller);
+        populateCalendarPage(seller);   // Eventos
     }
 }
 
 /**
- * Update common elements across all pages
+ * Atualiza elementos comuns em todas as páginas
+ * Nome do vendedor, links personalizados, etc.
  */
 function updateCommonElements(seller) {
     // Update seller name in header
@@ -875,7 +981,7 @@ function updateCommonElements(seller) {
 }
 
 /**
- * Populate dashboard page with seller metrics
+ * Preenche a página principal (dashboard) com métricas do vendedor
  */
 function populateDashboardPage(seller) {
     if (!seller.metrics) return;
@@ -905,7 +1011,8 @@ function populateDashboardPage(seller) {
 }
 
 /**
- * Update a single metric card
+ * Atualiza um card de métrica individual
+ * Usado para comissão, vendas, acessos, etc.
  */
 function updateMetricCard(id, value, trend, trendUp) {
     const card = document.getElementById(id);
@@ -932,7 +1039,8 @@ function updateMetricCard(id, value, trend, trendUp) {
 }
 
 /**
- * Populate goals page with seller goals data
+ * Preenche a página de metas com dados do vendedor
+ * Inclui meta mensal, funil e conquistas
  */
 function populateGoalsPage(seller) {
     if (!seller.goals) return;
@@ -961,7 +1069,7 @@ function populateGoalsPage(seller) {
 }
 
 /**
- * Update a funnel step
+ * Atualiza uma etapa do funil de vendas
  */
 function updateFunnelStep(id, data) {
     const step = document.getElementById(id);
@@ -972,7 +1080,8 @@ function updateFunnelStep(id, data) {
 }
 
 /**
- * Populate calendar page with seller events
+ * Preenche o calendário com eventos do vendedor
+ * Marca dias com eventos e lista próximos compromissos
  */
 function populateCalendarPage(seller) {
     if (!seller.calendar) return;
@@ -996,9 +1105,11 @@ function populateCalendarPage(seller) {
 }
 
 /**
- * Generate sales page URL with seller ID
- * @param {Object} seller - Seller data object
- * @returns {string} Full sales page URL
+ * Gera URL da página de vendas personalizada do vendedor
+ * Exemplo: https://site.com/vendedor/venda.html?vendedor=vendedor40
+ * 
+ * @param {Object} seller - Dados do vendedor
+ * @returns {string} URL completa com parâmetro vendedor
  */
 function getSalesPageUrl(seller) {
     const baseUrl = window.location.origin + window.location.pathname.replace(/[^\/]*$/, '');
@@ -1006,8 +1117,8 @@ function getSalesPageUrl(seller) {
 }
 
 /**
- * Open seller's personalized sales page
- * @param {Object} seller - Seller data object
+ * Abre a página de vendas personalizada em nova aba
+ * Usado no botão "Acessar Página" do dashboard
  */
 function openSalesPage(seller) {
     const url = getSalesPageUrl(seller);
@@ -1015,8 +1126,8 @@ function openSalesPage(seller) {
 }
 
 /**
- * Share seller's sales page via WhatsApp
- * @param {Object} seller - Seller data object
+ * Compartilha a página de vendas via WhatsApp
+ * O vendedor usa para enviar seu link personalizado aos clientes
  */
 function shareSellerPage(seller) {
     const url = getSalesPageUrl(seller);
@@ -1027,11 +1138,13 @@ function shareSellerPage(seller) {
 }
 
 /**
- * Get checkout URL with seller tracking
- * @param {string} planType - Plan identifier (prata, ouro, pet, company)
- * @param {Object} params - Additional parameters (age, weight, employees)
- * @param {Object} seller - Seller data object
- * @returns {string} Checkout URL with seller ID
+ * Gera URL de checkout com tracking do vendedor
+ * Adiciona ?vendedor=SLUG para rastrear comissões
+ * 
+ * @param {string} planType - Tipo do plano (prata, ouro, pet, company)
+ * @param {Object} params - Parâmetros adicionais (idade, peso, funcionários)
+ * @param {Object} seller - Dados do vendedor
+ * @returns {string} URL de checkout com ID do vendedor
  */
 function getCheckoutUrlWithSeller(planType, params, seller) {
     const planData = checkoutLinks[planType];
@@ -1065,19 +1178,32 @@ function getCheckoutUrlWithSeller(planType, params, seller) {
 }
 
 /**
- * Logout seller and clear session
+ * Faz logout do vendedor e limpa a sessão
+ * Redireciona para página de login
  */
 function logoutSeller() {
-    localStorage.removeItem('currentSeller');
-    window.location.href = 'index.html';
+    localStorage.removeItem('currentSeller');  // Limpa dados da sessão
+    window.location.href = 'index.html';       // Redireciona para login
 }
 
+/**
+ * Verifica autenticação do vendedor
+ * Protege páginas que requerem login
+ * 
+ * Páginas públicas (não requerem login):
+ * - index.html (login)
+ * - venda.html (página de vendas do cliente)
+ * 
+ * @returns {boolean} true se autenticado, false se não
+ */
 function checkAuth() {
+    // Páginas que não requerem autenticação
     const isLoginPage = window.location.pathname.includes('index.html') ||
         window.location.pathname.endsWith('/vendedor/') ||
         window.location.pathname.endsWith('vendedor');
     const isVendaPage = window.location.pathname.includes('venda.html');
 
+    // Se não é página pública e não tem sessão, redireciona para login
     if (!isLoginPage && !isVendaPage && !getSellerData()) {
         window.location.href = 'index.html';
         return false;
